@@ -97,9 +97,29 @@ export default function RequestQuotePage() {
     );
   };
 
+  const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
   const next = () => setStep((s) => Math.min(s + 1, 3));
   const back = () => setStep((s) => Math.max(s - 1, 0));
-  const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); setSubmitted(true); };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setSubmitError("");
+    try {
+      const res = await fetch("/api/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, services }),
+      });
+      if (!res.ok) throw new Error("Failed to send");
+      setSubmitted(true);
+    } catch {
+      setSubmitError("Something went wrong. Please try again or email us directly.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -371,9 +391,14 @@ export default function RequestQuotePage() {
                         ))}
                       </div>
 
+                      {submitError && (
+                        <p className="mt-4 text-sm text-red-brand">{submitError}</p>
+                      )}
                       <div className="mt-8 flex justify-between">
                         <button type="button" onClick={back} className="btn-outline">← Edit</button>
-                        <button type="submit" className="btn-primary">Submit Request →</button>
+                        <button type="submit" disabled={loading} className="btn-primary disabled:opacity-60 disabled:cursor-not-allowed">
+                          {loading ? "Sending…" : "Submit Request →"}
+                        </button>
                       </div>
                     </motion.div>
                   )}

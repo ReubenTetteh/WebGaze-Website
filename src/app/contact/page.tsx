@@ -25,13 +25,29 @@ const budgetOptions = [
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     firstName: "", lastName: "", email: "", phone: "", service: "", budget: "", message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error("Failed to send");
+      setSubmitted(true);
+    } catch {
+      setError("Something went wrong. Please try again or email us directly.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -228,8 +244,11 @@ export default function ContactPage() {
                     />
                   </div>
 
-                  <button type="submit" className="btn-primary w-full justify-center py-4">
-                    Send Message →
+                  {error && (
+                    <p className="text-sm text-red-brand">{error}</p>
+                  )}
+                  <button type="submit" disabled={loading} className="btn-primary w-full justify-center py-4 disabled:opacity-60 disabled:cursor-not-allowed">
+                    {loading ? "Sending…" : "Send Message →"}
                   </button>
                 </form>
               )}
