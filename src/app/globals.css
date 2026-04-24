@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Inter:wght@300;400;500;600&display=swap");
+
+:root {
+  --font-dm-sans: "DM Sans", sans-serif;
+  --font-inter: "Inter", sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-light-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-light-bg text-[#0a0a0a] font-body transition-colors duration-300;
+  }
+
+  .dark body {
+    @apply bg-dark-bg text-[#fafafa];
+  }
+
+  ::selection {
+    @apply bg-red-brand text-white;
+  }
+}
+
+@layer components {
+  .container-wide {
+    @apply mx-auto max-w-[1400px] px-6 md:px-10 lg:px-16;
+  }
+
+  .section-pad {
+    @apply py-20 md:py-28 lg:py-36;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-red-brand text-white font-display font-semibold
+           px-7 py-3.5 text-sm tracking-wide uppercase rounded-full
+           hover:bg-red-dark transition-all duration-300
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-brand focus-visible:ring-offset-2;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center gap-2 border border-current text-current font-display font-semibold
+           px-7 py-3.5 text-sm tracking-wide uppercase rounded-full
+           hover:bg-red-brand hover:border-red-brand hover:text-white transition-all duration-300;
+  }
+
+  .label-tag {
+    @apply inline-flex items-center gap-2 text-xs font-display font-semibold tracking-[0.2em] uppercase text-red-brand;
+  }
+
+  .label-tag::before {
+    content: "";
+    @apply block w-6 h-px bg-red-brand;
+  }
+
+  .divider {
+    @apply border-t border-light-border dark:border-dark-border;
+  }
+
+  /* Global rounding */
+  input, textarea, select {
+    @apply rounded-xl;
+  }
+
+  .tag-pill {
+    @apply rounded-full;
+  }
+
+  .icon-btn {
+    @apply rounded-full;
+  }
+}
+
+/* Override muted text colours for legibility */
+.text-light-muted { color: #1c1c1c; }
+.dark .text-light-muted { color: #888888; }
+.text-dark-muted { color: #888888; }
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #E01B24;
+  border-radius: 2px;
+}
+
+/* Noise texture overlay for premium feel */
+.noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.04;
+  border-radius: inherit;
+}
