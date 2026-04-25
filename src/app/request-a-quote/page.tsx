@@ -102,6 +102,18 @@ export default function RequestQuotePage() {
 
   const next = () => setStep((s) => Math.min(s + 1, 3));
   const back = () => setStep((s) => Math.max(s - 1, 0));
+
+  const stepValid = (s: number) => {
+    if (s === 0) return services.length > 0;
+    if (s === 1) return !!form.budget;
+    if (s === 2) return !!form.firstName && !!form.email && !!form.phone && !!form.message;
+    return true;
+  };
+
+  const goToStep = (i: number) => {
+    if (i < step) { setStep(i); return; }
+    if (i === step + 1 && stepValid(step)) { setStep(i); }
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -172,7 +184,11 @@ export default function RequestQuotePage() {
               <div className="flex items-center mb-14">
                 {steps.map((s, i) => (
                   <div key={s} className="flex items-center flex-1 last:flex-none">
-                    <button onClick={() => i < step && setStep(i)} className="flex flex-col items-center gap-2 group">
+                    <button
+                      onClick={() => goToStep(i)}
+                      disabled={i > step || (i === step + 1 && !stepValid(step))}
+                      className={`flex flex-col items-center gap-2 group ${i > step && !(i === step + 1 && stepValid(step)) ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+                    >
                       <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-display font-bold border-2 transition-all duration-300 ${
                         i < step ? "bg-red-brand border-red-brand text-white"
                         : i === step ? "border-red-brand text-red-brand bg-red-brand/5"
