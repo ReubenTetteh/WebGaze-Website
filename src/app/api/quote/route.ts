@@ -2,10 +2,14 @@ import { Resend } from "resend";
 import { NextResponse } from "next/server";
 import QuoteEmail from "@/emails/QuoteEmail";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(req: Request) {
   try {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      console.error("Quote API: RESEND_API_KEY is not set");
+      return NextResponse.json({ error: "Email service not configured." }, { status: 500 });
+    }
+
     const body = await req.json();
     const { firstName, lastName, email, phone, services, budget, message } = body;
 
@@ -13,6 +17,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
     }
 
+    const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
       from: "WebGaze <noreply@webgaze.com.au>",
       to: ["hello@webgaze.com.au"],
@@ -22,7 +27,7 @@ export async function POST(req: Request) {
     });
 
     if (error) {
-      console.error("Resend error:", error);
+      console.error("Resend error:", JSON.stringify(error));
       return NextResponse.json({ error: "Failed to send email." }, { status: 500 });
     }
 
