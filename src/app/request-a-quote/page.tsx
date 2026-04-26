@@ -82,6 +82,9 @@ const budgetOptions = [
 
 const steps = ["Services", "Budget", "Details", "Review"];
 
+const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+const isValidPhone = (phone: string) => /^[\d\s\+\-\(\)]{7,15}$/.test(phone.trim());
+
 export default function RequestQuotePage() {
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -90,6 +93,18 @@ export default function RequestQuotePage() {
     firstName: "", lastName: "", email: "", phone: "",
     budget: "", message: "",
   });
+  const [touched, setTouched] = useState({
+    email: false, phone: false, firstName: false, message: false,
+  });
+
+  const errors = {
+    firstName: touched.firstName && !form.firstName ? "First name is required." : "",
+    email: touched.email && !form.email ? "Email is required."
+      : touched.email && !isValidEmail(form.email) ? "Please enter a valid email address." : "",
+    phone: touched.phone && !form.phone ? "Phone number is required."
+      : touched.phone && !isValidPhone(form.phone) ? "Please enter a valid phone number." : "",
+    message: touched.message && !form.message ? "Please tell us about your project." : "",
+  };
 
   const toggleService = (label: string) => {
     setServices((prev) =>
@@ -106,7 +121,7 @@ export default function RequestQuotePage() {
   const stepValid = (s: number) => {
     if (s === 0) return services.length > 0;
     if (s === 1) return !!form.budget;
-    if (s === 2) return !!form.firstName && !!form.email && !!form.phone && !!form.message;
+    if (s === 2) return !!form.firstName && isValidEmail(form.email) && isValidPhone(form.phone) && !!form.message;
     return true;
   };
 
@@ -321,21 +336,26 @@ export default function RequestQuotePage() {
                       <p className="text-sm text-light-muted dark:text-dark-muted mb-8">The more detail, the better we can tailor your proposal.</p>
                       <div className="space-y-5">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                          {[
-                            { key: "firstName", label: "First Name", placeholder: "Reuben", required: true },
-                            { key: "lastName", label: "Last Name", placeholder: "Smith", required: false },
-                          ].map(({ key, label, placeholder, required }) => (
-                            <div key={key}>
-                              <label className="block text-xs font-display font-semibold tracking-[0.15em] uppercase text-light-muted dark:text-dark-muted mb-2">
-                                {label} {required && <span className="text-red-brand">*</span>}
-                              </label>
-                              <input type="text" required={required} placeholder={placeholder}
-                                value={(form as any)[key]}
-                                onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                                className="w-full bg-transparent border border-light-border dark:border-dark-border rounded-xl px-4 py-3.5 text-sm font-body
-                                           focus:outline-none focus:border-red-brand focus:ring-1 focus:ring-red-brand/20 transition-all dark:text-white" />
-                            </div>
-                          ))}
+                          <div>
+                            <label className="block text-xs font-display font-semibold tracking-[0.15em] uppercase text-light-muted dark:text-dark-muted mb-2">
+                              First Name <span className="text-red-brand">*</span>
+                            </label>
+                            <input type="text" required placeholder="Reuben"
+                              value={form.firstName}
+                              onChange={(e) => setForm({ ...form, firstName: e.target.value })}
+                              onBlur={() => setTouched((t) => ({ ...t, firstName: true }))}
+                              className={`w-full bg-transparent border rounded-xl px-4 py-3.5 text-sm font-body focus:outline-none focus:ring-1 transition-all dark:text-white ${errors.firstName ? "border-red-brand focus:border-red-brand focus:ring-red-brand/20" : "border-light-border dark:border-dark-border focus:border-red-brand focus:ring-red-brand/20"}`} />
+                            {errors.firstName && <p className="mt-1.5 text-xs text-red-brand">{errors.firstName}</p>}
+                          </div>
+                          <div>
+                            <label className="block text-xs font-display font-semibold tracking-[0.15em] uppercase text-light-muted dark:text-dark-muted mb-2">
+                              Last Name
+                            </label>
+                            <input type="text" placeholder="Smith"
+                              value={form.lastName}
+                              onChange={(e) => setForm({ ...form, lastName: e.target.value })}
+                              className="w-full bg-transparent border border-light-border dark:border-dark-border rounded-xl px-4 py-3.5 text-sm font-body focus:outline-none focus:border-red-brand focus:ring-1 focus:ring-red-brand/20 transition-all dark:text-white" />
+                          </div>
                         </div>
                         <div>
                           <label className="block text-xs font-display font-semibold tracking-[0.15em] uppercase text-light-muted dark:text-dark-muted mb-2">
@@ -343,8 +363,9 @@ export default function RequestQuotePage() {
                           </label>
                           <input type="email" required placeholder="hello@yourcompany.com.au" value={form.email}
                             onChange={(e) => setForm({ ...form, email: e.target.value })}
-                            className="w-full bg-transparent border border-light-border dark:border-dark-border rounded-xl px-4 py-3.5 text-sm font-body
-                                       focus:outline-none focus:border-red-brand focus:ring-1 focus:ring-red-brand/20 transition-all dark:text-white" />
+                            onBlur={() => setTouched((t) => ({ ...t, email: true }))}
+                            className={`w-full bg-transparent border rounded-xl px-4 py-3.5 text-sm font-body focus:outline-none focus:ring-1 transition-all dark:text-white ${errors.email ? "border-red-brand focus:border-red-brand focus:ring-red-brand/20" : "border-light-border dark:border-dark-border focus:border-red-brand focus:ring-red-brand/20"}`} />
+                          {errors.email && <p className="mt-1.5 text-xs text-red-brand">{errors.email}</p>}
                         </div>
                         <div>
                           <label className="block text-xs font-display font-semibold tracking-[0.15em] uppercase text-light-muted dark:text-dark-muted mb-2">
@@ -352,24 +373,30 @@ export default function RequestQuotePage() {
                           </label>
                           <input type="tel" required placeholder="+61 4XX XXX XXX" value={form.phone}
                             onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                            className="w-full bg-transparent border border-light-border dark:border-dark-border rounded-xl px-4 py-3.5 text-sm font-body
-                                       focus:outline-none focus:border-red-brand focus:ring-1 focus:ring-red-brand/20 transition-all dark:text-white" />
+                            onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
+                            className={`w-full bg-transparent border rounded-xl px-4 py-3.5 text-sm font-body focus:outline-none focus:ring-1 transition-all dark:text-white ${errors.phone ? "border-red-brand focus:border-red-brand focus:ring-red-brand/20" : "border-light-border dark:border-dark-border focus:border-red-brand focus:ring-red-brand/20"}`} />
+                          {errors.phone && <p className="mt-1.5 text-xs text-red-brand">{errors.phone}</p>}
                         </div>
                         <div>
                           <label className="block text-xs font-display font-semibold tracking-[0.15em] uppercase text-light-muted dark:text-dark-muted mb-2">
                             Project Details <span className="text-red-brand">*</span>
                           </label>
                           <textarea required rows={5} placeholder="Tell us about your project, goals, audience, and any specific requirements..."
-                            value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
-                            className="w-full bg-transparent border border-light-border dark:border-dark-border rounded-xl px-4 py-3.5 text-sm font-body resize-none
-                                       focus:outline-none focus:border-red-brand focus:ring-1 focus:ring-red-brand/20 transition-all dark:text-white" />
+                            value={form.message}
+                            onChange={(e) => setForm({ ...form, message: e.target.value })}
+                            onBlur={() => setTouched((t) => ({ ...t, message: true }))}
+                            className={`w-full bg-transparent border rounded-xl px-4 py-3.5 text-sm font-body resize-none focus:outline-none focus:ring-1 transition-all dark:text-white ${errors.message ? "border-red-brand focus:border-red-brand focus:ring-red-brand/20" : "border-light-border dark:border-dark-border focus:border-red-brand focus:ring-red-brand/20"}`} />
+                          {errors.message && <p className="mt-1.5 text-xs text-red-brand">{errors.message}</p>}
                         </div>
                       </div>
                       <div className="mt-8 flex justify-between">
                         <button type="button" onClick={back} className="btn-outline">← Back</button>
                         <button type="button" onClick={next}
-                          disabled={!form.firstName || !form.email || !form.phone || !form.message}
-                          className="btn-primary disabled:opacity-40 disabled:cursor-not-allowed">Review →</button>
+                          onClick={() => {
+                            setTouched({ firstName: true, email: true, phone: true, message: true });
+                            if (stepValid(2)) next();
+                          }}
+                          className="btn-primary">Review →</button>
                       </div>
                     </motion.div>
                   )}
