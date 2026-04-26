@@ -391,7 +391,7 @@ export default function RequestQuotePage() {
                       </div>
                       <div className="mt-8 flex justify-between">
                         <button type="button" onClick={back} className="btn-outline">← Back</button>
-                        <button type="button" onClick={next}
+                        <button type="button"
                           onClick={() => {
                             setTouched({ firstName: true, email: true, phone: true, message: true });
                             if (stepValid(2)) next();
