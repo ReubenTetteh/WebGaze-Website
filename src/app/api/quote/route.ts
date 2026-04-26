@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { render } from "@react-email/components";
 import { NextResponse } from "next/server";
 import QuoteEmail from "@/emails/QuoteEmail";
 
@@ -17,13 +18,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
     }
 
+    const html = await render(
+      QuoteEmail({ firstName, lastName, email, phone, services, budget, message })
+    );
+
     const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
       from: "WebGaze <noreply@webgaze.com.au>",
       to: ["hello@webgaze.com.au"],
       replyTo: email,
       subject: `Quote Request: ${firstName} ${lastName} — ${budget}`,
-      react: QuoteEmail({ firstName, lastName, email, phone, services, budget, message }),
+      html,
     });
 
     if (error) {
