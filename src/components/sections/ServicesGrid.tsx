@@ -8,31 +8,31 @@ const services = [
     title: "Web Design & Development",
     desc: "At WebGaze, we design and build websites that work for your business. Every site is carefully designed and built to help your brand stand out, perform well online, and connect with the right audience.",
     tags: ["REACT.JS", "E-COMMERCE", "WORDPRESS"],
-    href: "/services",
+    href: "/services/website-design",
   },
   {
     title: "Visual Branding",
     desc: "Visual branding is how people recognise your brand. We create cohesive brand visuals — from logos to colour systems — that help your business stand out, stay consistent, and connect with the right audience.",
     tags: ["GRAPHIC DESIGN", "LOGO DESIGN", "BRAND GUIDE"],
-    href: "/services",
+    href: "/services/visual-branding",
   },
   {
     title: "Website Maintenance",
     desc: "Every website needs ongoing maintenance to stay secure, fast, and up to date. Regular care helps prevent issues and ensures a smooth experience for your users.",
     tags: ["SECURITY", "UPDATES", "BACKUPS"],
-    href: "/services",
+    href: "/services/maintenance",
   },
   {
-    title: "Search Engine Optimization",
+    title: "Search Engine Optimisation",
     desc: "A strong SEO strategy helps your website get found by the right people. We optimise your site to improve visibility, attract relevant traffic, and support a smooth user experience.",
     tags: ["ON-PAGE SEO", "KEYWORD RESEARCH", "ANALYTICS"],
-    href: "/services",
+    href: "/services/seo",
   },
   {
     title: "Consulting & Audit",
     desc: "Our website consultation and audit services help you understand what's working and what needs improvement. We review your site's performance, security, design, and SEO.",
     tags: ["SEO AUDIT", "SECURITY AUDIT", "UI/UX AUDIT"],
-    href: "/services",
+    href: "/services/consulting",
   },
 ];
 
@@ -55,7 +55,7 @@ export default function ServicesGrid() {
 
             <AnimateIn delay={0.2}>
               <p className="mt-6 font-body text-base text-light-muted dark:text-dark-muted leading-relaxed max-w-md">
-                Everything we do is focused on helping businesses build a strong and consistent online presence. From strategy and design to optimisation and ongoing support, our services are designed to support growth with clarity and confidence.
+                From strategy and design to optimisation and ongoing support, our services work together to help your business grow online — with clarity and confidence at every step.
               </p>
             </AnimateIn>
 
@@ -65,7 +65,7 @@ export default function ServicesGrid() {
                   Contact Us
                 </Link>
                 <Link href="/request-a-quote" className="btn-outline">
-                  Request Proposal
+                  Request a Proposal
                 </Link>
               </div>
             </AnimateIn>
@@ -82,7 +82,7 @@ export default function ServicesGrid() {
                   zIndex: i + 1,
                 }}
               >
-                <div className="bg-light-bg dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-2xl p-8 group
+                <div className="bg-white dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-2xl p-8 group
                                shadow-[0_4px_24px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)]
                                dark:shadow-[0_4px_32px_rgba(224,27,36,0.08)] dark:hover:shadow-[0_8px_48px_rgba(224,27,36,0.18)]
                                transition-all duration-300">

@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import ServicePageHeader from "@/components/sections/ServicePageHeader";
+import Turnstile, { turnstileEnabled } from "@/components/ui/Turnstile";
 
 const serviceOptions = [
   {
@@ -114,6 +116,10 @@ export default function RequestQuotePage() {
 
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
+  const [captchaKey, setCaptchaKey] = useState(0);
+  const [hp, setHp] = useState("");
+  const startedAt = useRef(Date.now());
 
   const next = () => setStep((s) => Math.min(s + 1, 3));
   const back = () => setStep((s) => Math.max(s - 1, 0));
@@ -131,18 +137,30 @@ export default function RequestQuotePage() {
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (turnstileEnabled && !captchaToken) {
+      setSubmitError("Please complete the verification below.");
+      return;
+    }
     setLoading(true);
     setSubmitError("");
     try {
       const res = await fetch("/api/quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, services }),
+        body: JSON.stringify({
+          ...form,
+          services,
+          _hp: hp,
+          _elapsedMs: Date.now() - startedAt.current,
+          captchaToken,
+        }),
       });
       if (!res.ok) throw new Error("Failed to send");
       setSubmitted(true);
     } catch {
       setSubmitError("Something went wrong. Please try again or email us directly.");
+      setCaptchaToken("");
+      setCaptchaKey((k) => k + 1);
     } finally {
       setLoading(false);
     }
@@ -150,31 +168,7 @@ export default function RequestQuotePage() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="min-h-[42vh] flex items-end bg-dark-bg text-[#fafafa] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.03]"
-          style={{ backgroundImage: `linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px)`, backgroundSize: "80px 80px" }} />
-        <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 1.2 }}
-          className="absolute top-0 left-0 right-0 h-[2px] bg-red-brand origin-left" />
-        {/* Red glow */}
-        <div className="absolute bottom-0 left-1/4 w-96 h-64 bg-red-brand/10 rounded-full blur-[80px] pointer-events-none" />
-
-        <div className="container-wide relative z-10 pt-36 pb-16">
-          <motion.div className="flex items-center gap-3 mb-5"
-            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-            <span className="block w-8 h-[2px] bg-red-brand" />
-            <span className="font-display text-xs font-semibold tracking-[0.22em] uppercase text-red-brand">Get a Proposal</span>
-          </motion.div>
-          <motion.h1 className="font-display font-bold text-display-xl text-white leading-[1.04]"
-            initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45, duration: 0.7 }}>
-            Let&apos;s Build<br />Something Great
-          </motion.h1>
-          <motion.p className="mt-5 text-base text-[#888] max-w-sm leading-relaxed"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
-            Complete the form and we&apos;ll put together a tailored proposal — no obligation.
-          </motion.p>
-        </div>
-      </section>
+      <ServicePageHeader title="Request a Proposal" subtitle="Complete the form and we'll put together a tailored proposal — no obligation." backHref="/" />
 
       {/* Form section */}
       <section className="bg-light-bg dark:bg-dark-bg py-20 md:py-28">
@@ -434,12 +428,30 @@ export default function RequestQuotePage() {
                         ))}
                       </div>
 
+                      {/* Honeypot — hidden from real users; bots fill it and get dropped */}
+                      <input
+                        type="text"
+                        name="company_website"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        aria-hidden="true"
+                        value={hp}
+                        onChange={(e) => setHp(e.target.value)}
+                        style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+                      />
+
+                      {turnstileEnabled && (
+                        <div className="mt-6">
+                          <Turnstile key={captchaKey} onVerify={setCaptchaToken} onExpire={() => setCaptchaToken("")} />
+                        </div>
+                      )}
+
                       {submitError && (
                         <p className="mt-4 text-sm text-red-brand">{submitError}</p>
                       )}
                       <div className="mt-8 flex justify-between">
                         <button type="button" onClick={back} className="btn-outline">← Edit</button>
-                        <button type="submit" disabled={loading} className="btn-primary disabled:opacity-60 disabled:cursor-not-allowed">
+                        <button type="submit" disabled={loading || (turnstileEnabled && !captchaToken)} className="btn-primary disabled:opacity-60 disabled:cursor-not-allowed">
                           {loading ? "Sending…" : "Submit Request →"}
                         </button>
                       </div>

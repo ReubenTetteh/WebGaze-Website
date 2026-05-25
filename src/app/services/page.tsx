@@ -6,6 +6,7 @@ import Link from "next/link";
 import AnimateIn from "@/components/ui/AnimateIn";
 import Process from "@/components/sections/Process";
 import CTA from "@/components/sections/CTA";
+import ServicePageHeader from "@/components/sections/ServicePageHeader";
 
 const services = [
   {
@@ -108,52 +109,41 @@ const services = [
       "Prioritised action report",
     ],
   },
+  {
+    id: "systems",
+    num: "06",
+    label: "Systems & Automation",
+    title: "Systems & Automation",
+    headline: "Stop Doing It By Hand.",
+    body: [
+      "Every business has work it shouldn't be doing manually — the double-handled spreadsheets, the re-typed forms, the reports that take half a day. We build custom systems and automations that take that busywork off your team's plate.",
+      "We start by listening. Book a free Discovery Session, tell us what's slowing you down, and we'll design a solution — with AI doing the heavy lifting where it genuinely adds value.",
+    ],
+    tags: ["Custom Tools", "Automation", "AI Assistants", "Integrations"],
+    features: [
+      "Custom internal tools & dashboards",
+      "Workflow automation",
+      "AI assistants where it counts",
+      "Smart forms & intake systems",
+      "Reporting & digital records",
+      "Integrations across your tools",
+    ],
+    ctaHref: "/book-a-discovery-session",
+    ctaLabel: "Book a Free Discovery Session",
+    learnMore: "/services/systems-automation",
+  },
 ];
 
 export default function ServicesPage() {
   const [activeService, setActiveService] = useState("web");
   const active = services.find((s) => s.id === activeService)!;
+  const ctaHref = (active as { ctaHref?: string }).ctaHref ?? "/request-a-quote";
+  const ctaLabel = (active as { ctaLabel?: string }).ctaLabel ?? "Get a Proposal";
+  const learnMore = (active as { learnMore?: string }).learnMore;
 
   return (
     <>
-      {/* Hero */}
-      <section className="min-h-[55vh] flex items-end bg-dark-bg text-[#fafafa] relative overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: `linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)`,
-            backgroundSize: "80px 80px",
-          }}
-        />
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
-          className="absolute top-0 left-0 right-0 h-px bg-red-brand origin-left"
-        />
-        <div className="container-wide relative z-10 pt-36 pb-20">
-          <motion.span
-            className="label-tag"
-            style={{ color: "#E01B24" }}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <span className="block w-6 h-px bg-red-brand" />
-            Services
-          </motion.span>
-          <motion.h1
-            className="mt-6 font-display font-bold text-display-xl text-white"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.55, duration: 0.7 }}
-          >
-            Built with Strategy,
-            <br />
-            Not Guesswork
-          </motion.h1>
-        </div>
-      </section>
+      <ServicePageHeader title="Our Services" subtitle="Every service is built around one goal — helping your business grow online." backHref="/" />
 
       {/* Services — tabbed explorer */}
       <section className="section-pad bg-light-bg dark:bg-dark-bg">
@@ -234,9 +224,16 @@ export default function ServicesPage() {
                   ))}
                 </div>
 
-                <Link href="/request-a-quote" className="mt-8 btn-primary inline-flex">
-                  Get a Proposal
-                </Link>
+                <div className="mt-8 flex flex-wrap items-center gap-4">
+                  <Link href={ctaHref} className="btn-primary inline-flex">
+                    {ctaLabel}
+                  </Link>
+                  {learnMore && (
+                    <Link href={learnMore} className="font-display font-semibold text-sm text-red-brand hover:underline inline-flex items-center gap-1">
+                      Learn more <span aria-hidden="true">→</span>
+                    </Link>
+                  )}
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>

@@ -33,3 +33,7 @@ yarn-error.log*
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local tooling / unrelated projects (not part of the website)
+.claude/
+diwc-learning-platform/

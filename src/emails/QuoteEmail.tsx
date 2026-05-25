@@ -51,7 +51,7 @@ export default function QuoteEmail({
               {firstName} {lastName} wants a proposal
             </Heading>
             <Text style={subtext}>
-              Submitted via the Request a Quote page. Review and respond within 1–2 business days.
+              Submitted via the Request a Proposal page. Review and respond within 1–2 business days.
             </Text>
           </Section>
 

@@ -1,144 +1,132 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import AnimateIn from "@/components/ui/AnimateIn";
+import { motion } from "framer-motion";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import MobileProcess from "./MobileProcess";
 
 const steps = [
   {
     num: "01",
     title: "Discovery & Understanding",
     short: "We listen before we act.",
-    desc: "This stage is about understanding your goals, your audience, and the broader context around the work. We ask the right questions and define what success looks like before a single pixel is moved.",
-    tags: ["Kickoff Call", "Goals Mapping", "Audience Research"],
+    desc: "We get clear on your goals, your audience, and the context around the work — defining what success looks like before a single pixel moves.",
+    tags: ["Kickoff Call", "Goals", "Research"],
   },
   {
     num: "02",
     title: "Direction & Planning",
     short: "We map the path forward.",
-    desc: "With a clear picture in place, we define scope, priorities, and the practical steps needed to move forward — ensuring everything stays aligned, realistic, and built for results.",
-    tags: ["Scope Definition", "Sitemap", "Timeline"],
+    desc: "With the picture in place, we set scope, priorities, and the practical steps to move — keeping everything aligned, realistic, and built for results.",
+    tags: ["Scope", "Sitemap", "Timeline"],
   },
   {
     num: "03",
     title: "Development & Refinement",
     short: "We build and iterate.",
-    desc: "Ideas are shaped and refined through an iterative process. Whether it's design, content, or systems, we focus on quality, consistency, and purpose at every stage.",
-    tags: ["Design", "Development", "Feedback Loops"],
+    desc: "Design, content, and systems are shaped through an iterative loop — focused on quality, consistency, and purpose at every stage.",
+    tags: ["Design", "Build", "Feedback"],
   },
   {
     num: "04",
     title: "Delivery & Implementation",
     short: "We launch with confidence.",
-    desc: "We bring everything together, run final checks, and hand over a site that's complete, functional, and ready to perform — with support to make sure nothing falls through the cracks.",
-    tags: ["QA Testing", "Launch", "Handover"],
+    desc: "We bring it together, run final checks, and hand over a site that's complete and ready to perform — with support so nothing slips.",
+    tags: ["QA", "Launch", "Handover"],
   },
 ];
 
 export default function Process() {
-  const [open, setOpen] = useState<number>(0);
+  const isMobile = useIsMobile();
+
+  // Phones get a compact tap-to-expand timeline; the desktop grid below is
+  // left exactly as-is.
+  if (isMobile) {
+    return <MobileProcess steps={steps} />;
+  }
 
   return (
-    <section className="section-pad bg-light-bg dark:bg-dark-bg overflow-hidden">
-      <div className="container-wide">
+    <section className="relative bg-[#080808] overflow-hidden section-pad">
+      {/* hairline seam — the portfolio above shares this near-black, so mark the join */}
+      <div className="absolute top-0 inset-x-0 h-px bg-white/10" />
 
+      {/* soft red glow to keep it from feeling flat */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-60"
+        style={{
+          background:
+            "radial-gradient(45% 40% at 85% 15%, rgba(224,27,36,0.08), transparent 70%)",
+        }}
+      />
+
+      <div className="container-wide relative z-10">
         {/* Header */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
-          <AnimateIn>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 mb-16 md:mb-20">
+          <div>
             <div className="flex items-center gap-3 mb-5">
               <span className="block w-8 h-[2px] bg-red-brand" />
               <span className="font-display text-xs font-semibold tracking-[0.22em] uppercase text-red-brand">
                 How We Work
               </span>
             </div>
-            <h2 className="font-display font-bold text-display-md dark:text-white leading-[1.1]">
+            <h2 className="font-display font-bold text-display-md text-white leading-[1.1]">
               A process built for clarity, not chaos.
             </h2>
-          </AnimateIn>
-          <AnimateIn delay={0.15}>
-            <p className="lg:pt-2 font-body text-base text-light-muted dark:text-dark-muted leading-relaxed max-w-md">
-              From the first conversation to final delivery, every step is intentional — keeping you informed, on time, and confident in the outcome.
-            </p>
-          </AnimateIn>
+          </div>
+          <p className="lg:pt-2 lg:self-end font-body text-base text-white/55 leading-relaxed max-w-md">
+            From the first conversation to final delivery, every step is
+            intentional — keeping you informed, on time, and confident in the
+            outcome.
+          </p>
         </div>
 
-        {/* Accordion */}
-        <div className="divide-y divide-light-border dark:divide-dark-border border-t border-b border-light-border dark:border-dark-border">
-          {steps.map((step, i) => {
-            const isOpen = open === i;
-            return (
-              <div key={step.num}>
-                <button
-                  onClick={() => setOpen(isOpen ? -1 : i)}
-                  className="w-full text-left group"
-                >
-                  <div className="flex items-center gap-6 py-6 md:py-8">
-                    {/* Number */}
-                    <span className={`font-display font-bold text-sm tracking-[0.18em] w-10 flex-shrink-0 transition-colors duration-300 ${isOpen ? "text-red-brand" : "text-[#bbb] dark:text-[#444]"}`}>
-                      {step.num}
-                    </span>
+        {/* Timeline */}
+        <div className="relative">
+          {/* connecting track (desktop) — runs through the number nodes */}
+          <div className="hidden lg:block absolute top-[1.375rem] left-0 right-0 h-px bg-white/10" />
 
-                    {/* Title */}
-                    <h3 className={`font-display font-bold text-xl md:text-2xl flex-1 transition-colors duration-300 ${isOpen ? "text-[#0f0f0f] dark:text-white" : "text-[#0f0f0f]/70 dark:text-white/50"}`}>
-                      {step.title}
-                    </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-14 gap-x-8">
+            {steps.map((step, i) => (
+              <motion.div
+                key={step.num}
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.6, delay: i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                className="relative"
+              >
+                {/* number node — solid bg cuts the track so it reads as a stop */}
+                <div className="relative z-10 mb-7">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-[#080808] font-display font-bold text-sm tracking-[0.1em] text-red-brand">
+                    {step.num}
+                  </span>
+                </div>
 
-                    {/* Short desc — visible when closed */}
-                    <span className={`hidden md:block font-body text-sm text-light-muted dark:text-dark-muted max-w-[200px] text-right transition-opacity duration-300 ${isOpen ? "opacity-0" : "opacity-100"}`}>
-                      {step.short}
-                    </span>
+                <h3 className="font-display font-bold text-lg md:text-xl text-white leading-snug mb-2">
+                  {step.title}
+                </h3>
+                <p className="font-display text-sm font-medium text-red-brand/90 mb-4">
+                  {step.short}
+                </p>
+                <p className="font-body text-sm text-white/55 leading-relaxed mb-6">
+                  {step.desc}
+                </p>
 
-                    {/* Chevron */}
-                    <motion.span
-                      animate={{ rotate: isOpen ? 45 : 0 }}
-                      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                      className={`flex-shrink-0 w-8 h-8 rounded-full border flex items-center justify-center text-sm font-light transition-colors duration-300 ${isOpen ? "border-red-brand text-red-brand bg-red-brand/10" : "border-light-border dark:border-dark-border text-[#999]"}`}
+                <div className="flex flex-wrap gap-2">
+                  {step.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-[10px] font-display font-semibold tracking-[0.12em] uppercase
+                                 px-2.5 py-1 rounded-full border border-white/10 text-white/55"
                     >
-                      +
-                    </motion.span>
-                  </div>
-                </button>
-
-                {/* Expanded content */}
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                      className="overflow-hidden"
-                    >
-                      <div className="relative pb-10 pl-16 pr-4 md:pr-16 overflow-hidden">
-                        {/* Ghost number */}
-                        <span className="absolute -right-4 top-[-1.5rem] font-display font-bold text-[8rem] md:text-[10rem] leading-none text-[#0f0f0f]/[0.04] dark:text-white/[0.04] select-none pointer-events-none">
-                          {step.num}
-                        </span>
-
-                        <p className="font-body text-base text-light-muted dark:text-dark-muted leading-relaxed max-w-2xl mb-6 relative z-10">
-                          {step.desc}
-                        </p>
-
-                        <div className="flex flex-wrap gap-2 relative z-10">
-                          {step.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="text-[11px] font-display font-semibold tracking-[0.14em] uppercase
-                                         px-3 py-1.5 rounded-full border border-red-brand/30 text-red-brand bg-red-brand/5"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
-
       </div>
     </section>
   );

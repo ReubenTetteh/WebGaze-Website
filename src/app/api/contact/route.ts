@@ -2,6 +2,8 @@ import { Resend } from "resend";
 import { render } from "@react-email/components";
 import { NextResponse } from "next/server";
 import ContactEmail from "@/emails/ContactEmail";
+import { failsBasicBotChecks, verifyTurnstile, getClientIp } from "@/lib/antiBot";
+import { saveLead } from "@/lib/leads";
 
 export async function POST(req: Request) {
   try {
@@ -12,11 +14,28 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
+
+    // Honeypot / time-gate: silently accept so bots don't learn, but send nothing.
+    if (failsBasicBotChecks(body)) {
+      return NextResponse.json({ success: true });
+    }
+    // Turnstile: real users who fail can retry.
+    if (!(await verifyTurnstile(body.captchaToken, getClientIp(req)))) {
+      return NextResponse.json({ error: "Verification failed. Please try again." }, { status: 400 });
+    }
+
     const { firstName, lastName, email, phone, service, budget, message } = body;
 
     if (!firstName || !email || !phone || !message) {
       return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
     }
+
+    // Persist the lead. Never let a DB issue break the email path.
+    await saveLead({
+      type: "contact",
+      firstName, lastName, email, phone, service, budget, message,
+      data: { service, budget },
+    }).catch((e) => console.error("saveLead (contact) failed:", e));
 
     const html = await render(
       ContactEmail({ firstName, lastName, email, phone, service, budget, message })

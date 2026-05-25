@@ -17,8 +17,8 @@ interface ContactEmailProps {
   lastName: string;
   email: string;
   phone: string;
-  service: string;
-  budget: string;
+  service?: string;
+  budget?: string;
   message: string;
 }
 

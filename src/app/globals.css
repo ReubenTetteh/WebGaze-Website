@@ -50,6 +50,37 @@
            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-brand focus-visible:ring-offset-2;
   }
 
+  .btn-primary-glow {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 0 0 1px rgba(224, 27, 36, 0.2), 0 10px 26px rgba(224, 27, 36, 0.18);
+  }
+
+  .btn-primary-glow::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    z-index: -2;
+    background: conic-gradient(from 0deg, transparent 0deg, transparent 105deg, rgba(255, 255, 255, 0.95) 145deg, #ff5960 172deg, transparent 218deg, transparent 360deg);
+    animation: proposalGlowSpin 2.8s linear infinite;
+  }
+
+  .btn-primary-glow::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    z-index: -1;
+    border-radius: inherit;
+    background: #E01B24;
+    transition: background 300ms ease;
+  }
+
+  .btn-primary-glow:hover::after {
+    background: #B01219;
+  }
+
   .btn-outline {
     @apply inline-flex items-center gap-2 border border-current text-current font-display font-semibold
            px-7 py-3.5 text-sm tracking-wide uppercase rounded-full
@@ -80,6 +111,28 @@
 
   .icon-btn {
     @apply rounded-full;
+  }
+}
+
+@keyframes proposalGlowSpin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+/* Vertical marquee (CTA "who we build for" column) */
+@keyframes marquee-vertical {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
+}
+
+.animate-marquee-vertical {
+  animation: marquee-vertical var(--duration, 30s) linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-vertical {
+    animation: none;
   }
 }
 
