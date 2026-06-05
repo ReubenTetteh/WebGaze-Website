@@ -98,8 +98,14 @@ export default function Home() {
       {/* 4. Process — reassure on how we work */}
       <Process />
 
-      {/* 5. Social proof + objections — testimonials and FAQ side by side */}
-      <section className="section-pad bg-light-bg dark:bg-dark-bg">
+      {/* 5. Social proof + objections.
+          On phones each component renders its own full-bleed v2-style section,
+          so the shared wrapper is desktop-only. */}
+      <div className="lg:hidden">
+        <Testimonials variant="column" />
+        <FAQ variant="column" />
+      </div>
+      <section className="hidden lg:block section-pad bg-light-bg dark:bg-dark-bg border-t border-light-border dark:border-dark-border">
         <div className="container-wide">
           <div className="grid grid-cols-1 gap-14 lg:grid-cols-2 lg:gap-20 lg:items-stretch">
             <Testimonials variant="column" />

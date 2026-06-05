@@ -53,7 +53,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${dmSans.variable} ${inter.variable}`}>
       <body>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        {/* Always start in light mode regardless of the device's system setting;
+            only switch when the user manually toggles (choice persists). */}
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} forcedTheme="light">
           <SiteChrome>{children}</SiteChrome>
           <Analytics />
           <SpeedInsights />

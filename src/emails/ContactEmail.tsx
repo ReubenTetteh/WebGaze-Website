@@ -65,7 +65,7 @@ export default function ContactEmail({
             </Row>
             <Row style={row}>
               <Column style={labelCol}><Text style={label}>Phone</Text></Column>
-              <Column style={valueCol}><Text style={value}>{phone}</Text></Column>
+              <Column style={valueCol}><Text style={value}>{phone || "—"}</Text></Column>
             </Row>
             <Row style={row}>
               <Column style={labelCol}><Text style={label}>Service</Text></Column>

@@ -77,7 +77,7 @@ export default function ArticlePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <div className="bg-light-bg dark:bg-[#080808]">
+      <div className="bg-light-bg dark:bg-dark-bg">
       <ServicePageHeader
         title="Why Your Website Is Losing You Clients"
         backHref="/insights"

@@ -3,6 +3,7 @@ import Link from "next/link";
 import ServicePageHeader from "@/components/sections/ServicePageHeader";
 import AnimateIn from "@/components/ui/AnimateIn";
 import CTA from "@/components/sections/CTA";
+import ProcessScroller from "@/components/services/ProcessScroller";
 
 export const metadata: Metadata = {
   title: "SEO Agency Sydney | Search Engine Optimisation | WebGaze",
@@ -58,17 +59,17 @@ const tags = ["On-Page SEO", "Technical SEO", "Keyword Research", "Analytics", "
 
 const processSteps = [
   {
-    num: "01",
+    label: "01",
     title: "Audit & Research",
-    desc: "We begin with a thorough audit of your current site and a deep dive into keyword opportunities in your market — identifying where you stand, what&apos;s holding you back, and where the biggest wins are.",
+    desc: "We begin with a thorough audit of your current site and a deep dive into keyword opportunities in your market — identifying where you stand, what's holding you back, and where the biggest wins are.",
   },
   {
-    num: "02",
+    label: "02",
     title: "Strategy & Implementation",
     desc: "We build a clear, prioritised SEO strategy and start implementing — from on-page optimisations and technical fixes to content improvements aligned with what your audience is searching for.",
   },
   {
-    num: "03",
+    label: "03",
     title: "Monitor & Refine",
     desc: "SEO is a long game. We track rankings, traffic, and performance month on month — adjusting the strategy as results come in and the landscape evolves.",
   },
@@ -150,36 +151,16 @@ export default function SEOPage() {
         </div>
       </section>
 
-      {/* Process — DARK */}
-      <section className="section-pad bg-[#0d0d0d]">
-        <div className="container-wide">
-          <AnimateIn>
-            <span className="label-tag">Our SEO Process</span>
-            <h2 className="mt-5 font-display font-bold text-display-md text-white max-w-xl leading-[1.1]">
-              Data in. Results out.
-            </h2>
-            <p className="mt-5 font-body text-base text-dark-muted max-w-2xl leading-relaxed">
-              We don&apos;t guess. Every recommendation is backed by research, every result is tracked, and every strategy evolves with your business.
-            </p>
-          </AnimateIn>
+      {/* Process — DARK (sticky-scroll) */}
+      <ProcessScroller
+        eyebrow="Our SEO Process"
+        heading="Data in. Results out."
+        intro="We don't guess. Every recommendation is backed by research, every result is tracked, and every strategy evolves with your business."
+        stages={processSteps}
+        bg="#0d0d0d"
+      />
 
-          <div className="mt-16 divide-y divide-dark-border border-t border-dark-border">
-            {processSteps.map((step, i) => (
-              <AnimateIn key={step.num} delay={i * 0.1}>
-                <div className="grid grid-cols-1 lg:grid-cols-[80px_1fr] gap-6 lg:gap-12 py-12 items-start">
-                  <span className="font-display font-bold text-5xl text-red-brand/20 select-none leading-none">{step.num}</span>
-                  <div>
-                    <h3 className="font-display font-bold text-2xl text-white">{step.title}</h3>
-                    <p className="mt-3 font-body text-base text-dark-muted leading-relaxed max-w-2xl">{step.desc}</p>
-                  </div>
-                </div>
-              </AnimateIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <CTA />
+      <CTA lead="Get found by the people" accent="already searching" />
     </>
   );
 }

@@ -40,7 +40,7 @@ const NARRATIVE = [
     label: "The Challenge",
     title: "Speak to two markets with one voice.",
     body: "A chamber that bridges Ghana and Australia has to feel credible to investors, members, diplomats and trade partners on both sides at once. The brief was a presence that reads as an authoritative institution — not a community page.",
-    image: "/portfolio/agcci-temp/home-hero.png",
+    image: "/portfolio/agcci-temp/agcci-homepage-hero.jpg",
     object: "object-top",
   },
   {
@@ -48,7 +48,7 @@ const NARRATIVE = [
     label: "Our Approach",
     title: "An editorial structure built on trust.",
     body: "We led with the people and the partnership, then organised everything else into a clear hierarchy — about, service areas, membership, news. Confident spacing and a restrained gold-on-ink palette give the organisation the weight it deserves.",
-    image: "/portfolio/agcci-temp/about-full.png",
+    image: "/portfolio/agcci-temp/agcci-about-fullpage.jpg",
     object: "object-top",
   },
   {
@@ -56,7 +56,7 @@ const NARRATIVE = [
     label: "The Outcome",
     title: "A platform stakeholders take seriously.",
     body: "AGCCI now has a flexible WordPress home that supports advocacy, events, membership and business development — a site that frames the chamber as a serious connector between two economies.",
-    image: "/portfolio/agcci-temp/services-full.png",
+    image: "/portfolio/agcci-temp/agcci-services-fullpage.jpg",
     object: "object-top",
   },
 ];
@@ -108,10 +108,10 @@ const RESULTS = [
 ];
 
 const PREVIEWS = [
-  { key: "home", label: "Home", src: "/portfolio/agcci-temp/home-full.png" },
-  { key: "about", label: "About Us", src: "/portfolio/agcci-temp/about-full.png" },
-  { key: "services", label: "Service Areas", src: "/portfolio/agcci-temp/services-full.png" },
-  { key: "membership", label: "Membership", src: "/portfolio/agcci-temp/membership-full.png" },
+  { key: "home", label: "Home", src: "/portfolio/agcci-temp/agcci-homepage-fullpage.jpg" },
+  { key: "about", label: "About Us", src: "/portfolio/agcci-temp/agcci-about-fullpage.jpg" },
+  { key: "services", label: "Service Areas", src: "/portfolio/agcci-temp/agcci-services-fullpage.jpg" },
+  { key: "membership", label: "Membership", src: "/portfolio/agcci-temp/agcci-membership-fullpage.jpg" },
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -551,8 +551,8 @@ export default function AgcciCaseStudy() {
               style={{ y: heroImgY }}
             >
               <BrowserPreview
-                src="/portfolio/agcci-temp/home-full.png"
-                alt="AGCCI website home page"
+                src="/portfolio/agcci-temp/agcci-homepage-fullpage.jpg"
+                alt="Australian Ghanaian Chamber of Commerce website homepage — business & trade web design by WebGaze"
                 url="agcci.org.au"
                 priority
               />

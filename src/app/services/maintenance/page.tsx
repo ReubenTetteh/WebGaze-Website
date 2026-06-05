@@ -3,6 +3,7 @@ import Link from "next/link";
 import ServicePageHeader from "@/components/sections/ServicePageHeader";
 import AnimateIn from "@/components/ui/AnimateIn";
 import CTA from "@/components/sections/CTA";
+import ProcessScroller from "@/components/services/ProcessScroller";
 
 export const metadata: Metadata = {
   title: "Website Maintenance Sydney | Care Plans & Security | WebGaze",
@@ -58,19 +59,19 @@ const tags = ["Security", "Updates", "Backups", "Monitoring", "WordPress", "Perf
 
 const processSteps = [
   {
-    num: "01",
+    label: "01",
     title: "Onboarding & Audit",
-    desc: "We start with a thorough review of your site — its current security posture, performance baseline, and update status — so we know exactly what we&apos;re working with from day one.",
+    desc: "We start with a thorough review of your site — its current security posture, performance baseline, and update status — so we know exactly what we're working with from day one.",
   },
   {
-    num: "02",
+    label: "02",
     title: "Ongoing Care",
-    desc: "We run scheduled updates, security scans, and performance checks. Any issues found are addressed promptly, and you&apos;re kept informed with clear monthly reports.",
+    desc: "We run scheduled updates, security scans, and performance checks. Any issues found are addressed promptly, and you're kept informed with clear monthly reports.",
   },
   {
-    num: "03",
+    label: "03",
     title: "Priority Support",
-    desc: "If something goes wrong, we&apos;re on it fast. From emergency fixes to content updates, you have a reliable partner you can count on whenever you need it.",
+    desc: "If something goes wrong, we're on it fast. From emergency fixes to content updates, you have a reliable partner you can count on whenever you need it.",
   },
 ];
 
@@ -150,36 +151,16 @@ export default function MaintenancePage() {
         </div>
       </section>
 
-      {/* Process — DARK */}
-      <section className="section-pad bg-[#0d0d0d]">
-        <div className="container-wide">
-          <AnimateIn>
-            <span className="label-tag">How It Works</span>
-            <h2 className="mt-5 font-display font-bold text-display-md text-white max-w-xl leading-[1.1]">
-              Proactive care, not reactive fixes.
-            </h2>
-            <p className="mt-5 font-body text-base text-dark-muted max-w-2xl leading-relaxed">
-              Our maintenance service is built around prevention. We stay ahead of issues so your site keeps performing — and you never have to think about it.
-            </p>
-          </AnimateIn>
+      {/* Process — DARK (sticky-scroll) */}
+      <ProcessScroller
+        eyebrow="How It Works"
+        heading="Proactive care, not reactive fixes."
+        intro="Our maintenance service is built around prevention. We stay ahead of issues so your site keeps performing — and you never have to think about it."
+        stages={processSteps}
+        bg="#0d0d0d"
+      />
 
-          <div className="mt-16 divide-y divide-dark-border border-t border-dark-border">
-            {processSteps.map((step, i) => (
-              <AnimateIn key={step.num} delay={i * 0.1}>
-                <div className="grid grid-cols-1 lg:grid-cols-[80px_1fr] gap-6 lg:gap-12 py-12 items-start">
-                  <span className="font-display font-bold text-5xl text-red-brand/20 select-none leading-none">{step.num}</span>
-                  <div>
-                    <h3 className="font-display font-bold text-2xl text-white">{step.title}</h3>
-                    <p className="mt-3 font-body text-base text-dark-muted leading-relaxed max-w-2xl">{step.desc}</p>
-                  </div>
-                </div>
-              </AnimateIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <CTA />
+      <CTA lead="Keep it fast, secure," accent="and always online" />
     </>
   );
 }

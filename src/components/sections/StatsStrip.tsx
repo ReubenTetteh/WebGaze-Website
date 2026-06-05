@@ -13,7 +13,7 @@ const stats = [
 
 export default function StatsStrip() {
   return (
-    <section className="relative bg-[#080808] overflow-hidden py-20 md:py-28">
+    <section className="relative bg-dark-bg overflow-hidden py-20 md:py-28">
       {/* faint top hairline to separate from the portfolio above */}
       <div className="absolute top-0 inset-x-0 h-px bg-white/10" />
 

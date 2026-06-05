@@ -4,13 +4,21 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimateIn from "@/components/ui/AnimateIn";
 import { faqs } from "@/lib/faqs";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import MobileFaq from "./MobileFaq";
 
 type FAQProps = {
   variant?: "full" | "column";
 };
 
 export default function FAQ({ variant = "full" }: FAQProps) {
+  const isMobile = useIsMobile();
   const [open, setOpen] = useState<number | null>(null);
+
+  // Phones get the v2-style accordion. Desktop layouts below stay byte-identical.
+  if (isMobile) {
+    return <MobileFaq />;
+  }
 
   const accordionItems = faqs.map((faq, i) => (
     <AnimateIn key={i} delay={i * 0.06}>

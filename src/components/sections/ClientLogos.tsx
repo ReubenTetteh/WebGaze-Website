@@ -1,4 +1,8 @@
+"use client";
+
 import { LogoCloud } from "@/components/ui/logo-cloud-4";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import MobileClientLogos from "./MobileClientLogos";
 
 const CLIENT_LOGOS = [
   { src: "/clients/care-partners-australia.png", alt: "Care Partners Australia" },
@@ -15,9 +19,15 @@ const CLIENT_LOGOS = [
  * from behind the text. The left fade smooths the emergence.
  */
 export default function ClientLogos() {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return <MobileClientLogos logos={CLIENT_LOGOS} />;
+  }
+
   return (
     <section className="relative z-10 -mt-10 overflow-hidden rounded-t-[2.25rem] bg-white py-5 md:-mt-16 md:rounded-t-[3rem] md:py-6">
-      <div className="relative mx-auto flex max-w-[1400px] items-center px-5 md:px-10">
+      <div className="relative mx-auto flex max-w-[1400px] items-center px-4 md:px-10">
         {/* Label — solid white layer above the logos */}
         <div className="relative z-20 flex shrink-0 items-center bg-white pr-5 md:pr-7">
           <span className="max-w-[150px] font-display text-[11px] font-semibold uppercase leading-snug tracking-[0.2em] text-[#6b6b6b]">

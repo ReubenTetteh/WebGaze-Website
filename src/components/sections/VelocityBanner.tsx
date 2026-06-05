@@ -10,7 +10,7 @@ import {
 } from "framer-motion";
 
 const TEXT =
-  "Web Design · Visual Branding · SEO & Growth · Website Maintenance · Consulting & Audit · Digital Strategy · ";
+  "Web Design · AI & Custom Systems · SEO & Growth · Website Maintenance · Visual Branding · Digital Strategy · ";
 
 export default function VelocityBanner() {
   const targetRef = useRef(null);

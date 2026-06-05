@@ -18,6 +18,17 @@ const serviceOptions = [
     ),
   },
   {
+    id: "systems",
+    label: "AI & Custom Business Systems",
+    short: "Custom apps, automations, trackers, portals, and AI-assisted tools.",
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+        <circle cx="12" cy="12" r="3" />
+        <path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" />
+      </svg>
+    ),
+  },
+  {
     id: "branding",
     label: "Visual Branding",
     short: "Logos, colour systems, and brand identity.",
@@ -63,8 +74,8 @@ const serviceOptions = [
   },
   {
     id: "full",
-    label: "Full Digital Package",
-    short: "Website + branding + SEO — the complete setup.",
+    label: "Full Digital System",
+    short: "Website + custom systems + SEO — built as one connected setup.",
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />

@@ -1,129 +1,104 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import AnimateIn from "@/components/ui/AnimateIn";
+import Image from "next/image";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 import CTA from "@/components/sections/CTA";
+
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+const studioFacts = [
+  { label: "Based in", value: "Sydney, NSW" },
+  { label: "Working", value: "Australia-wide" },
+  { label: "Experience", value: "6+ years" },
+  { label: "Projects", value: "50+ delivered" },
+];
+
+const stats = [
+  { value: "50+", label: "Projects delivered", sub: "Websites, brands & systems" },
+  { value: "9", label: "Industries served", sub: "Care, energy, trade & more" },
+  { value: "6+", label: "Years of craft", sub: "Sydney-based, Australia-wide" },
+  { value: "100%", label: "Custom built", sub: "No templates, ever" },
+];
 
 const services = [
   {
     eyebrow: "01",
-    title: "Website design and development",
-    body: "Custom websites for Australian businesses that need credibility, speed, conversion flow, and a site structure search engines can understand.",
+    title: "Website design & development",
+    body: "Custom websites for Australian businesses that need credibility, speed, a clear conversion path, and structure search engines can understand.",
     href: "/services/website-design",
   },
   {
     eyebrow: "02",
     title: "Visual branding",
-    body: "Logo design, brand identity, and visual systems that make your business feel consistent across web, social, proposals, signage, and campaigns.",
+    body: "Logos, brand identities, and visual systems that make your business feel consistent across web, social, proposals, and signage.",
     href: "/services/visual-branding",
   },
   {
     eyebrow: "03",
     title: "Search engine optimisation",
-    body: "SEO strategy, technical foundations, content structure, and ongoing optimisation designed to help the right customers find you.",
+    body: "SEO strategy, technical foundations, and content structure designed to help the right customers actually find you.",
     href: "/services/seo",
   },
   {
     eyebrow: "04",
-    title: "Maintenance and digital care",
-    body: "Updates, security, backups, content changes, and practical support so your website keeps working after launch.",
+    title: "Maintenance & digital care",
+    body: "Updates, security, backups, and practical support so your website keeps working long after launch day.",
     href: "/services/maintenance",
   },
 ];
 
-const decisionSignals = [
-  { label: "Find", text: "Can the right people discover you?", width: "w-[86%]" },
-  { label: "Understand", text: "Can they explain what you do back to themselves?", width: "w-[92%]" },
-  { label: "Trust", text: "Do the details make you feel established?", width: "w-[78%]" },
-  { label: "Act", text: "Is the next step obvious without pressure?", width: "w-[84%]" },
-];
-
-const contrast = [
-  ["Scattered pages", "A page system with clear roles"],
-  ["Generic visuals", "A brand presence people can recognise"],
-  ["Buried services", "Offers structured around customer intent"],
-  ["SEO later", "Search thinking inside the architecture"],
-  ["Launch and leave", "Ongoing care after the site is live"],
-];
-
-const method = [
+const principles = [
   {
-    title: "Message first",
-    body: "We clarify the offer, audience, proof, objections, and conversion path before layout decisions start.",
+    title: "Strategy before pixels",
+    body: "We get clear on your offer, audience, and goals before any design decisions are made. The prettiest site fails if it says the wrong thing.",
   },
   {
-    title: "UX as sales logic",
-    body: "Every section has a job: orient, explain, prove, compare, reassure, or move the visitor forward.",
+    title: "Design that earns trust",
+    body: "Clean, fast, and consistent. We make your business feel established without sacrificing readability, accessibility, or load speed.",
   },
   {
-    title: "Brand with restraint",
-    body: "We make the business feel distinctive without sacrificing speed, readability, accessibility, or trust.",
+    title: "Built to be found",
+    body: "Search thinking lives inside the architecture, not bolted on later. The right people should be able to discover you and understand you quickly.",
   },
   {
-    title: "Build for use",
-    body: "The finished site is responsive, SEO-ready, maintainable, and practical for the team that has to live with it.",
+    title: "We don't disappear",
+    body: "Launch is the start, not the finish. We stick around for updates, fixes, and changes so your site stays useful as the business grows.",
   },
 ];
 
 const fit = [
-  "The current site no longer reflects the quality of the business.",
-  "Customers ask questions the website should already answer.",
-  "The brand feels inconsistent across web, proposals, socials, and sales material.",
-  "The business needs better visibility in search without turning the site into keyword soup.",
+  "Your current site no longer reflects the quality of the business.",
+  "Customers keep asking questions the website should already answer.",
+  "The brand feels inconsistent across web, proposals, and social.",
+  "You want better visibility in search, without turning the site into keyword soup.",
 ];
 
-function SignalPanel() {
+/* Scroll-reveal wrapper with real entrance motion. */
+function Reveal({
+  children,
+  delay = 0,
+  y = 22,
+  className,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  y?: number;
+  className?: string;
+}) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
   return (
-    <div className="relative overflow-hidden rounded-[22px] border border-white/14 bg-[#111]/88 shadow-[0_28px_90px_rgba(0,0,0,0.45)]">
-      <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
-        <div className="flex gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-red-brand" />
-          <span className="h-2.5 w-2.5 rounded-full bg-white/25" />
-          <span className="h-2.5 w-2.5 rounded-full bg-white/25" />
-        </div>
-        <p className="font-display text-[10px] font-semibold uppercase tracking-[0.24em] text-white/45">
-          WebGaze Decision Map
-        </p>
-      </div>
-
-      <div className="grid gap-4 p-4 lg:grid-cols-[1fr_180px]">
-        <div className="relative min-h-[360px] overflow-hidden rounded-[16px] bg-white/5">
-          <Image
-            src="/portfolio/Care-Partners-bbnn.png"
-            alt="Care Partners Australia website interface designed by WebGaze"
-            fill
-            sizes="(min-width: 1024px) 42vw, 92vw"
-            priority
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/82 via-black/12 to-transparent" />
-          <div className="absolute bottom-5 left-5 right-5">
-            <p className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-red-200">
-              Website before the phone call
-            </p>
-            <p className="mt-2 max-w-md font-display text-3xl font-bold leading-[1]">
-              The first impression has to do the explaining.
-            </p>
-          </div>
-        </div>
-
-        <div className="grid content-between gap-3">
-          {decisionSignals.map((signal) => (
-            <div key={signal.label} className="rounded-[14px] border border-white/10 bg-white/[0.035] p-4">
-              <div className="flex items-center justify-between gap-3">
-                <p className="font-display text-sm font-bold text-white">{signal.label}</p>
-                <span className="h-1.5 w-1.5 rounded-full bg-red-brand" />
-              </div>
-              <p className="mt-2 font-body text-xs leading-relaxed text-white/48">{signal.text}</p>
-              <div className="mt-4 h-1 overflow-hidden rounded-full bg-white/10">
-                <div className={`h-full rounded-full bg-red-brand ${signal.width}`} />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
+    <motion.div
+      ref={ref}
+      className={className}
+      initial={{ opacity: 0, y }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay, ease: EASE }}
+    >
+      {children}
+    </motion.div>
   );
 }
 
@@ -131,152 +106,223 @@ export default function AboutPage() {
   return (
     <>
       <main className="bg-light-bg text-[#0a0a0a] dark:bg-dark-bg dark:text-white">
-        <section className="relative overflow-hidden bg-[#060606] pt-32 text-white md:pt-40">
-          <div className="pointer-events-none absolute inset-0">
-            <div className="absolute inset-x-0 top-0 h-px bg-red-brand" />
-            <div
-              className="absolute inset-0 opacity-[0.05]"
-              style={{
-                backgroundImage:
-                  "linear-gradient(rgba(255,255,255,0.85) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.85) 1px, transparent 1px)",
-                backgroundSize: "84px 84px",
-              }}
-            />
-          </div>
+        {/* ───────────────────────── Hero (matches /projects header style) ───────────────────────── */}
+        <section className="relative flex min-h-[40vh] flex-col justify-end overflow-hidden bg-[#0a0a0a] pb-10 pt-24 md:pb-12">
+          <Image
+            src="/service-header-bg.jpg"
+            alt=""
+            fill
+            priority
+            aria-hidden="true"
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/25" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/30" />
 
-          <div className="container-wide relative z-10">
-            <div className="grid min-h-[calc(100vh-7rem)] grid-cols-1 items-end gap-12 pb-16 lg:grid-cols-12 lg:gap-10">
-              <div className="lg:col-span-6">
-                <AnimateIn>
-                  <p className="label-tag">About WebGaze</p>
-                </AnimateIn>
-                <AnimateIn delay={0.08}>
-                  <h1 className="mt-8 max-w-[9.5ch] font-display text-6xl font-bold leading-[0.88] [letter-spacing:0] sm:text-7xl md:text-8xl lg:text-9xl">
-                    The page before the phone call.
-                  </h1>
-                </AnimateIn>
-                <AnimateIn delay={0.16}>
-                  <p className="mt-8 max-w-xl font-body text-lg leading-[1.65] text-white/68 md:text-xl">
-                    Most people meet your business when nobody from your team is in the room. WebGaze designs that moment: the website, brand, search structure, and next step that help Australian businesses get understood faster.
-                  </p>
-                </AnimateIn>
-                <AnimateIn delay={0.24}>
-                  <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-                    <Link href="/request-a-quote" className="btn-primary justify-center">
-                      Request a Proposal
-                      <span aria-hidden="true">→</span>
-                    </Link>
-                    <Link href="/projects" className="btn-outline justify-center border-white/30 text-white hover:border-red-brand">
-                      View Projects
-                      <span aria-hidden="true">→</span>
-                    </Link>
-                  </div>
-                </AnimateIn>
+          <div className="container-wide relative z-10 w-full">
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: EASE }}
+              className="mb-5"
+            >
+              <Link
+                href="/"
+                aria-label="Go back home"
+                className="group inline-flex items-center gap-2 font-display text-sm font-medium text-white/40 transition-colors duration-200 hover:text-white/80"
+              >
+                <span className="text-base leading-none transition-transform duration-200 group-hover:-translate-x-1">
+                  ←
+                </span>
+              </Link>
+            </motion.div>
+
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+              {/* Left: heading */}
+              <div className="max-w-[760px]">
+                <motion.span
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.05, ease: EASE }}
+                  className="mb-4 inline-flex items-center rounded-full border border-red-brand/30 bg-red-brand/[0.08] px-3 py-1.5 font-display text-[10px] font-bold uppercase tracking-[0.22em] text-red-brand"
+                >
+                  About WebGaze
+                </motion.span>
+
+                <motion.h1
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.55, delay: 0.08, ease: [0.25, 0.1, 0.25, 1] }}
+                  className="max-w-[18ch] font-display font-bold text-white text-[clamp(2.55rem,10.5vw,3.7rem)] leading-[1.02] tracking-[-0.035em] lg:text-[clamp(1.9rem,3.4vw,3.2rem)] lg:leading-[1.05] lg:tracking-[-0.02em]"
+                >
+                  We make good businesses impossible to ignore.
+                </motion.h1>
+
+                <motion.p
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.45, delay: 0.18, ease: EASE }}
+                  className="mt-4 max-w-[52ch] font-body text-base leading-relaxed text-white/55"
+                >
+                  A Sydney web design, branding, and SEO studio. We build custom sites
+                  that load fast, look credible, and turn visitors into enquiries.
+                </motion.p>
               </div>
 
-              <div className="lg:col-span-6">
-                <AnimateIn delay={0.18}>
-                  <SignalPanel />
-                </AnimateIn>
-              </div>
+              {/* Right: CTA */}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.24, ease: EASE }}
+                className="flex flex-col gap-3 sm:flex-row lg:flex-col lg:items-end"
+              >
+                <Link href="/request-a-quote" className="btn-primary justify-center">
+                  Request a Proposal
+                  <span aria-hidden="true">→</span>
+                </Link>
+                <Link
+                  href="/projects"
+                  className="btn-outline justify-center border-white/30 text-white hover:border-red-brand"
+                >
+                  View Projects
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </motion.div>
             </div>
           </div>
         </section>
 
-        <section className="bg-light-bg py-20 dark:bg-dark-bg md:py-24">
+        {/* ───────────────────────── Studio facts (compact strip) ───────────────────────── */}
+        <section className="border-b border-light-border bg-light-surface dark:border-dark-border dark:bg-[#0d0d0d]">
           <div className="container-wide">
-            <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
-              <div className="lg:col-span-5">
-                <AnimateIn>
-                  <p className="label-tag">The UX Problem</p>
-                </AnimateIn>
-                <AnimateIn delay={0.08}>
-                  <h2 className="mt-6 font-display text-5xl font-bold leading-[0.98] [letter-spacing:0] md:text-7xl">
-                    People do not read websites. They judge them.
-                  </h2>
-                </AnimateIn>
-              </div>
-
-              <div className="lg:col-span-7">
-                <AnimateIn delay={0.12}>
-                  <p className="max-w-4xl font-display text-3xl font-bold leading-[1.12] [letter-spacing:0] md:text-5xl">
-                    They scan for relevance, proof, effort, and risk. If the site makes them work too hard, they leave with the wrong story.
-                  </p>
-                </AnimateIn>
-                <AnimateIn delay={0.18}>
-                  <p className="mt-8 max-w-3xl font-body text-base leading-relaxed text-light-muted dark:text-dark-muted md:text-lg">
-                    Our work is to make the right story easier to reach. That means cleaner information architecture, better service framing, brand consistency, faster pages, search-aware content, and interfaces that respect how people actually decide.
-                  </p>
-                </AnimateIn>
-              </div>
-            </div>
+            <dl className="grid grid-cols-2 md:grid-cols-4 md:divide-x md:divide-light-border md:dark:divide-dark-border">
+              {studioFacts.map((fact, i) => (
+                <div
+                  key={fact.label}
+                  className={`py-5 md:px-8 ${i % 2 === 0 ? "pr-4" : "pl-4"} ${
+                    i < 2 ? "border-b border-light-border dark:border-dark-border md:border-b-0" : ""
+                  }`}
+                >
+                  <dt className="font-display text-[10px] font-bold uppercase tracking-[0.2em] text-red-brand">
+                    {fact.label}
+                  </dt>
+                  <dd className="mt-1.5 font-display text-base font-bold md:text-lg">
+                    {fact.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </section>
 
-        <section className="border-y border-light-border bg-light-surface dark:border-dark-border dark:bg-[#0d0d0d]">
-          <div className="container-wide py-6">
-            <div className="grid grid-cols-1 gap-3 lg:grid-cols-5">
-              <div className="flex min-h-[180px] items-end bg-[#0a0a0a] p-6 text-white lg:col-span-2">
-                <div>
-                  <p className="font-display text-xs font-semibold uppercase tracking-[0.22em] text-red-brand">
-                    Before / After
-                  </p>
-                  <h2 className="mt-5 font-display text-4xl font-bold leading-[1] [letter-spacing:0] md:text-5xl">
-                    From looking present to being chosen.
-                  </h2>
-                </div>
-              </div>
-
-              <div className="lg:col-span-3">
-                <div className="divide-y divide-light-border border-y border-light-border dark:divide-dark-border dark:border-dark-border">
-                  {contrast.map(([before, after], index) => (
-                    <AnimateIn key={before} delay={index * 0.04}>
-                      <div className="grid grid-cols-[1fr_40px_1fr] items-center gap-4 py-5">
-                        <p className="font-body text-sm leading-snug text-light-muted dark:text-dark-muted">{before}</p>
-                        <span className="text-center font-display text-lg font-bold text-red-brand">→</span>
-                        <p className="font-display text-base font-bold leading-snug md:text-lg">{after}</p>
-                      </div>
-                    </AnimateIn>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-[#0a0a0a] py-20 text-white md:py-28">
+        {/* ───────────────────────── Story / why ───────────────────────── */}
+        <section className="bg-light-bg py-16 dark:bg-dark-bg md:py-24">
           <div className="container-wide">
-            <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
+            <Reveal>
+              <p className="label-tag">Why we exist</p>
+            </Reveal>
+            <Reveal delay={0.06}>
+              <h2 className="mt-5 max-w-[24ch] font-display text-[clamp(1.75rem,3.5vw,3rem)] font-bold leading-[1.05] tracking-[-0.03em]">
+                Most people judge your business before they ever speak to you.
+              </h2>
+            </Reveal>
+
+            <div className="mt-10 grid grid-cols-1 gap-x-10 gap-y-6 lg:grid-cols-12">
+              <Reveal delay={0.1} className="lg:col-span-6">
+                <p className="font-display text-xl font-semibold leading-[1.3] tracking-[-0.015em] md:text-2xl">
+                  They find you online, scan for a few seconds, and decide whether
+                  you&apos;re worth their time. A slow, confusing, or dated website
+                  quietly loses good customers every day.
+                </p>
+              </Reveal>
+              <Reveal delay={0.16} className="lg:col-span-5 lg:col-start-8">
+                <p className="font-body text-sm leading-relaxed text-light-muted dark:text-dark-muted md:text-base">
+                  We started WebGaze to fix that gap. Plenty of Australian businesses
+                  are excellent at what they do, but their website doesn&apos;t show
+                  it. Our job is to close the distance between how good the business
+                  really is and how it comes across online, with clearer structure,
+                  stronger branding, faster pages, and content the right people can
+                  actually find.
+                </p>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ───────────────────────── Stats ───────────────────────── */}
+        <section className="bg-[#0a0a0a] py-16 text-white md:py-20">
+          <div className="container-wide">
+            <Reveal>
+              <p className="label-tag">By the numbers</p>
+            </Reveal>
+            <div className="mt-8 grid grid-cols-2 border-t border-white/10 lg:grid-cols-4 lg:divide-x lg:divide-white/10">
+              {stats.map((stat, i) => (
+                <Reveal
+                  key={stat.label}
+                  delay={i * 0.06}
+                  className={`pt-6 md:pt-7 lg:px-8 ${
+                    i % 2 === 0 ? "pr-4" : "border-l border-white/10 pl-4 lg:border-l-0 lg:pl-8"
+                  } ${i < 2 ? "border-b border-white/10 pb-6 lg:border-b-0 lg:pb-0" : ""}`}
+                >
+                  <p className="font-display text-[clamp(2.2rem,5vw,3.4rem)] font-bold leading-none tracking-[-0.04em]">
+                    {stat.value}
+                  </p>
+                  <p className="mt-3 font-display text-sm font-semibold">{stat.label}</p>
+                  <p className="mt-1 font-body text-xs leading-relaxed text-white/45">
+                    {stat.sub}
+                  </p>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ───────────────────────── What we do ───────────────────────── */}
+        <section className="bg-light-bg py-16 dark:bg-dark-bg md:py-24">
+          <div className="container-wide">
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
               <div className="lg:col-span-5">
-                <AnimateIn>
-                  <p className="label-tag">What We Build</p>
-                </AnimateIn>
-                <AnimateIn delay={0.08}>
-                  <h2 className="mt-6 font-display text-5xl font-bold leading-[0.95] [letter-spacing:0] md:text-7xl">
+                <Reveal>
+                  <p className="label-tag">What we do</p>
+                </Reveal>
+                <Reveal delay={0.06}>
+                  <h2 className="mt-5 font-display text-[clamp(1.75rem,3.5vw,3rem)] font-bold leading-[1.05] tracking-[-0.03em]">
                     One studio. Four connected disciplines.
                   </h2>
-                </AnimateIn>
+                </Reveal>
+                <Reveal delay={0.1}>
+                  <p className="mt-5 max-w-md font-body text-sm leading-relaxed text-light-muted dark:text-dark-muted md:text-base">
+                    Because they live under one roof, your website, brand, and search
+                    presence all pull in the same direction.
+                  </p>
+                </Reveal>
               </div>
+
               <div className="lg:col-span-7">
-                <div className="divide-y divide-white/10 border-y border-white/10">
+                <div className="border-t border-light-border dark:border-dark-border">
                   {services.map((service, index) => (
-                    <AnimateIn key={service.title} delay={index * 0.06}>
+                    <Reveal key={service.title} delay={index * 0.05}>
                       <Link
                         href={service.href}
-                        className="group grid gap-5 py-8 transition-colors duration-300 hover:bg-white/[0.03] md:grid-cols-[72px_1fr_32px]"
+                        className="group relative grid items-start gap-x-5 gap-y-2 border-b border-light-border py-6 dark:border-dark-border md:grid-cols-[44px_1fr_24px]"
                       >
-                        <span className="font-display text-sm font-semibold text-red-brand">{service.eyebrow}</span>
+                        <span className="absolute left-0 top-0 h-[2px] w-0 bg-red-brand transition-all duration-500 ease-out group-hover:w-full" />
+                        <span className="font-display text-sm font-semibold text-red-brand">
+                          {service.eyebrow}
+                        </span>
                         <span>
-                          <span className="block font-display text-2xl font-bold leading-tight">{service.title}</span>
-                          <span className="mt-3 block max-w-2xl font-body text-sm leading-relaxed text-white/60">
+                          <span className="block font-display text-lg font-bold leading-tight tracking-[-0.015em] transition-transform duration-300 ease-out group-hover:translate-x-1 md:text-xl">
+                            {service.title}
+                          </span>
+                          <span className="mt-2 block max-w-2xl font-body text-sm leading-relaxed text-light-muted dark:text-dark-muted">
                             {service.body}
                           </span>
                         </span>
-                        <span className="self-start text-2xl text-white/40 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-red-brand">
+                        <span className="hidden self-center text-xl text-light-muted/40 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:text-red-brand dark:text-white/40 md:block">
                           →
                         </span>
                       </Link>
-                    </AnimateIn>
+                    </Reveal>
                   ))}
                 </div>
               </div>
@@ -284,66 +330,76 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="bg-light-bg py-20 dark:bg-dark-bg md:py-28">
+        {/* ───────────────────────── How we work ───────────────────────── */}
+        <section className="bg-[#0a0a0a] py-16 text-white md:py-24">
           <div className="container-wide">
-            <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
-              <div className="lg:col-span-4">
-                <AnimateIn>
-                  <p className="label-tag">Operating System</p>
-                </AnimateIn>
-                <AnimateIn delay={0.08}>
-                  <h2 className="mt-6 font-display text-5xl font-bold leading-[1] [letter-spacing:0] md:text-6xl">
-                    Strategy first. Interface second. Polish last.
-                  </h2>
-                </AnimateIn>
-              </div>
+            <div className="max-w-2xl">
+              <Reveal>
+                <p className="label-tag">How we work</p>
+              </Reveal>
+              <Reveal delay={0.06}>
+                <h2 className="mt-5 font-display text-[clamp(1.75rem,3.5vw,3rem)] font-bold leading-[1.05] tracking-[-0.03em]">
+                  Four things we never cut corners on.
+                </h2>
+              </Reveal>
+            </div>
 
-              <div className="lg:col-span-8">
-                <div className="grid grid-cols-1 gap-px bg-light-border dark:bg-dark-border md:grid-cols-2">
-                  {method.map((item, index) => (
-                    <AnimateIn key={item.title} delay={index * 0.06}>
-                      <article className="min-h-[250px] bg-light-bg p-7 dark:bg-dark-bg">
-                        <span className="font-display text-sm font-bold text-red-brand">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        <h3 className="mt-10 font-display text-2xl font-bold">{item.title}</h3>
-                        <p className="mt-4 font-body text-sm leading-relaxed text-light-muted dark:text-dark-muted">
-                          {item.body}
-                        </p>
-                      </article>
-                    </AnimateIn>
-                  ))}
-                </div>
-              </div>
+            {/* Mobile: stacked compact rows. Desktop: compact 2-col grid. */}
+            <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden border border-white/12 bg-white/12 md:mt-12 md:grid-cols-2">
+              {principles.map((item, index) => (
+                <Reveal key={item.title} delay={index * 0.05}>
+                  <div className="h-full bg-[#0a0a0a] p-6 md:p-7">
+                    <div className="flex items-baseline gap-3">
+                      <span className="font-display text-sm font-bold text-red-brand">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <h3 className="font-display text-lg font-bold tracking-[-0.015em] md:text-xl">
+                        {item.title}
+                      </h3>
+                    </div>
+                    <p className="mt-3 font-body text-sm leading-relaxed text-white/55">
+                      {item.body}
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
             </div>
           </div>
         </section>
 
-        <section className="bg-light-surface py-20 dark:bg-[#0d0d0d] md:py-28">
+        {/* ───────────────────────── Who we're a fit for ───────────────────────── */}
+        <section className="bg-light-bg py-16 dark:bg-dark-bg md:py-24">
           <div className="container-wide">
-            <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
               <div className="lg:col-span-7">
-                <AnimateIn>
-                  <p className="label-tag">When WebGaze Fits</p>
-                </AnimateIn>
-                <AnimateIn delay={0.08}>
-                  <h2 className="mt-6 max-w-4xl font-display text-5xl font-bold leading-[1] [letter-spacing:0] md:text-7xl">
-                    The business is good. The digital experience is not telling the truth yet.
+                <Reveal>
+                  <p className="label-tag">When we&apos;re a fit</p>
+                </Reveal>
+                <Reveal delay={0.06}>
+                  <h2 className="mt-5 max-w-[20ch] font-display text-[clamp(1.75rem,3.5vw,3rem)] font-bold leading-[1.05] tracking-[-0.03em]">
+                    The business is good. The website just isn&apos;t saying so yet.
                   </h2>
-                </AnimateIn>
+                </Reveal>
               </div>
 
               <div className="lg:col-span-5">
-                <AnimateIn delay={0.14}>
-                  <p className="font-body text-base leading-relaxed text-light-muted dark:text-dark-muted md:text-lg">
-                    We are a Sydney web design studio for teams that need clearer positioning, stronger website design, better SEO foundations, and a digital partner who can keep the site useful after launch.
+                <Reveal delay={0.1}>
+                  <p className="font-body text-sm leading-relaxed text-light-muted dark:text-dark-muted md:text-base">
+                    We work best with established teams that need clearer positioning,
+                    a stronger website, better SEO foundations, and a partner who keeps
+                    the site useful after launch. A few signs it might be time:
                   </p>
-                </AnimateIn>
-                <div className="mt-8 divide-y divide-light-border border-y border-light-border dark:divide-dark-border dark:border-dark-border">
+                </Reveal>
+                <div className="mt-6 border-t border-light-border dark:border-dark-border">
                   {fit.map((item, index) => (
-                    <AnimateIn key={item} delay={0.18 + index * 0.04}>
-                      <p className="py-4 font-display text-lg font-semibold leading-snug">{item}</p>
-                    </AnimateIn>
+                    <Reveal key={item} delay={0.14 + index * 0.05}>
+                      <div className="flex items-start gap-3 border-b border-light-border py-4 dark:border-dark-border">
+                        <span className="mt-2 block h-1.5 w-1.5 shrink-0 rounded-full bg-red-brand" />
+                        <p className="font-display text-base font-semibold leading-snug tracking-[-0.01em]">
+                          {item}
+                        </p>
+                      </div>
+                    </Reveal>
                   ))}
                 </div>
               </div>

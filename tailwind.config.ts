@@ -16,10 +16,11 @@ const config: Config = {
           light: "#FF2D37",
         },
         dark: {
-          bg: "#080808",
-          surface: "#111111",
-          border: "#1f1f1f",
-          muted: "#888888",
+          bg: "#0E0E11",
+          surface: "#18181C",
+          elevated: "#212127",
+          border: "#2C2C33",
+          muted: "#8A8A8A",
         },
         light: {
           bg: "#FAFAFA",
@@ -40,6 +41,9 @@ const config: Config = {
       animation: {
         "fade-up": "fadeUp 0.6s ease forwards",
         "fade-in": "fadeIn 0.5s ease forwards",
+        nudge: "nudge 1.4s ease-in-out infinite",
+        ripple: "ripple 2s ease-out infinite",
+        breathe: "breathe 2.6s ease-in-out infinite",
       },
       keyframes: {
         fadeUp: {
@@ -49,6 +53,18 @@ const config: Config = {
         fadeIn: {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
+        },
+        nudge: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(4px)" },
+        },
+        ripple: {
+          "0%": { transform: "scale(1)", opacity: "0.55" },
+          "100%": { transform: "scale(1.6)", opacity: "0" },
+        },
+        breathe: {
+          "0%, 100%": { opacity: "0.35" },
+          "50%": { opacity: "0.7" },
         },
       },
     },

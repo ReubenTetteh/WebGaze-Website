@@ -64,8 +64,24 @@ export default function ProjectHeroPreview({
         </div>
       )}
 
-      <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/55 px-4 py-2 font-display text-[10px] font-bold uppercase tracking-[0.16em] text-white/70 backdrop-blur transition duration-300 group-hover:opacity-0">
-        Hover to scroll
+      {/* Attention cue — pulses, ripples, and nudges so visitors notice the scroll interaction; fades the moment they hover. */}
+      <div className="pointer-events-none absolute bottom-5 left-1/2 -translate-x-1/2 transition-all duration-300 group-hover:translate-y-2 group-hover:opacity-0">
+        <div className="relative flex items-center gap-2 rounded-full border border-white/20 bg-black/70 px-4 py-2.5 shadow-[0_10px_30px_rgba(0,0,0,0.45)] backdrop-blur">
+          {/* expanding ripple ring */}
+          <span className="absolute inset-0 -z-10 animate-ripple rounded-full border border-red-light/60" />
+          {/* soft breathing glow */}
+          <span className="absolute inset-0 -z-10 animate-breathe rounded-full bg-red-brand/25 blur-md" />
+          <span className="relative flex h-2 w-2 items-center justify-center">
+            <span className="absolute h-2 w-2 animate-ping rounded-full bg-red-light/80" />
+            <span className="h-1.5 w-1.5 rounded-full bg-red-light" />
+          </span>
+          <span className="font-display text-[11px] font-bold uppercase tracking-[0.16em] text-white">
+            Hover to scroll
+          </span>
+          <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5 animate-nudge text-red-light" aria-hidden="true">
+            <path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
       </div>
     </div>
   );

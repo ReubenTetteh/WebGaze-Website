@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import MobileTestimonials from "./MobileTestimonials";
 
 const SLIDE_DURATION = 6000;
 
@@ -37,6 +39,8 @@ type TestimonialsProps = {
 };
 
 export default function Testimonials({ variant = "full" }: TestimonialsProps) {
+  // All hooks run unconditionally — keep the early `isMobile` return BELOW
+  // them so hook order is stable across re-renders.
   const [current, setCurrent] = useState(0);
   const [progress, setProgress] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -57,6 +61,18 @@ export default function Testimonials({ variant = "full" }: TestimonialsProps) {
     }, 50);
     return () => clearInterval(id);
   }, [next, paused]);
+
+  const isMobile = useIsMobile();
+
+  // Phones get the v2-style mobile card (dark on light bg). Desktop variants
+  // below are left exactly as-is.
+  if (isMobile) {
+    return (
+      <MobileTestimonials
+        items={testimonials.map(({ quote, name, role }) => ({ quote, name, role }))}
+      />
+    );
+  }
 
   const t = testimonials[current];
 
@@ -94,19 +110,19 @@ export default function Testimonials({ variant = "full" }: TestimonialsProps) {
     <>
       {/* Brand mark — real logo on a white plate so the full-colour marks read
           on any card; falls back to a monogram when no logo asset exists. */}
-      <div className="flex justify-center mb-10">
+      <div className="flex justify-center mb-5 md:mb-10">
         {t.logo ? (
-          <div className="inline-flex h-16 items-center justify-center rounded-xl bg-white px-5">
+          <div className="inline-flex h-11 md:h-16 items-center justify-center rounded-lg md:rounded-xl bg-white px-3.5 md:px-5">
             {/* eslint-disable-next-line @next/next/no-img-element -- client logos are arbitrary-ratio assets normalised by height */}
             <img
               src={t.logo}
               alt={t.name}
               loading="lazy"
-              className="h-9 w-auto max-w-[150px] object-contain"
+              className="h-6 md:h-9 w-auto max-w-[110px] md:max-w-[150px] object-contain"
             />
           </div>
         ) : (
-          <div className={`inline-flex items-center justify-center w-16 h-16 rounded-xl font-display font-black text-xl tracking-tight ${
+          <div className={`inline-flex items-center justify-center w-11 h-11 md:w-16 md:h-16 rounded-lg md:rounded-xl font-display font-black text-base md:text-xl tracking-tight ${
             t.dark
               ? "bg-white/10 text-white"
               : "bg-[#0f0f0f]/8 text-[#0f0f0f] dark:bg-white/10 dark:text-white"
@@ -117,20 +133,20 @@ export default function Testimonials({ variant = "full" }: TestimonialsProps) {
       </div>
 
       {/* Quote */}
-      <blockquote className={`font-body text-xl md:text-2xl leading-[1.6] italic flex-1 ${
+      <blockquote className={`font-body text-[0.95rem] md:text-2xl leading-[1.55] md:leading-[1.6] italic flex-1 ${
         t.dark ? "text-white/85" : "text-[#1a1a1a] dark:text-white/85"
       }`}>
         &ldquo;{t.quote}&rdquo;
       </blockquote>
 
       {/* Name + role */}
-      <div className={`mt-10 pt-7 border-t ${
+      <div className={`mt-5 pt-4 md:mt-10 md:pt-7 border-t ${
         t.dark ? "border-white/10" : "border-[#0f0f0f]/10 dark:border-white/10"
       }`}>
-        <p className={`font-display font-bold text-base ${t.dark ? "text-white" : "text-[#0f0f0f] dark:text-white"}`}>
+        <p className={`font-display font-bold text-sm md:text-base ${t.dark ? "text-white" : "text-[#0f0f0f] dark:text-white"}`}>
           {t.name}
         </p>
-        <p className={`font-body text-sm mt-1 ${t.dark ? "text-white/50" : "text-[#777] dark:text-white/50"}`}>
+        <p className={`font-body text-xs md:text-sm mt-0.5 md:mt-1 ${t.dark ? "text-white/50" : "text-[#777] dark:text-white/50"}`}>
           {t.role}
         </p>
       </div>
@@ -185,14 +201,14 @@ export default function Testimonials({ variant = "full" }: TestimonialsProps) {
       className="bg-[#f5f5f5] dark:bg-[#0e0e0e] overflow-hidden"
       {...pauseHandlers}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[560px]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 lg:min-h-[560px]">
 
         {/* LEFT — text + progress bars */}
-        <div className="flex flex-col justify-center px-6 md:px-12 lg:pl-[max(3rem,calc((100vw-1400px)/2+5rem))] lg:pr-16 py-20 lg:py-24">
-          <h2 className="font-display font-bold text-4xl md:text-5xl lg:text-[3.2rem] text-[#0f0f0f] dark:text-white leading-[1.08] mb-5">
+        <div className="flex flex-col justify-center px-4 md:px-12 lg:pl-[max(3rem,calc((100vw-1400px)/2+5rem))] lg:pr-16 py-10 md:py-20 lg:py-24">
+          <h2 className="font-display font-bold text-[1.75rem] md:text-5xl lg:text-[3.2rem] text-[#0f0f0f] dark:text-white leading-[1.08] mb-3 md:mb-5">
             What our clients think
           </h2>
-          <p className="font-body text-base text-light-muted dark:text-dark-muted leading-relaxed max-w-sm mb-12">
+          <p className="font-body text-sm md:text-base text-light-muted dark:text-dark-muted leading-relaxed max-w-sm mb-7 md:mb-12">
             Real outcomes for real businesses — built with strategy, clarity, and craft.
           </p>
 
@@ -200,7 +216,7 @@ export default function Testimonials({ variant = "full" }: TestimonialsProps) {
         </div>
 
         {/* RIGHT — card slides right to left */}
-        <div className="relative flex items-center py-10 lg:py-16 pl-6 lg:pl-8 pr-0 overflow-hidden">
+        <div className="relative flex items-center py-6 md:py-10 lg:py-16 px-4 md:pl-6 lg:pl-8 md:pr-0 overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
@@ -208,12 +224,12 @@ export default function Testimonials({ variant = "full" }: TestimonialsProps) {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "-100%", opacity: 0 }}
               transition={{ duration: 0.52, ease: [0.32, 0, 0.18, 1] }}
-              className={`relative w-full h-full flex flex-col justify-between p-10 md:p-14 rounded-sm lg:rounded-r-none ${
+              className={`relative w-full h-full flex flex-col justify-between p-6 md:p-10 lg:p-14 rounded-2xl lg:rounded-r-none min-h-[280px] md:min-h-[460px] ${
                 t.dark
                   ? "bg-[#0f0f0f] text-white"
                   : "bg-[#f2f2f2] dark:bg-[#141414] text-[#0f0f0f] dark:text-white"
               }`}
-              style={{ minHeight: "460px", boxShadow: cardShadow, zIndex: 3 }}
+              style={{ boxShadow: cardShadow, zIndex: 3 }}
             >
               {cardInner}
             </motion.div>

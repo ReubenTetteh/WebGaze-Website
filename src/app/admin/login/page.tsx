@@ -3,6 +3,21 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+function safeRedirectPath(value: string | null): string {
+  if (!value || !value.startsWith("/") || value.startsWith("//")) return "/admin";
+
+  try {
+    const url = new URL(value, window.location.origin);
+    const isAdminPath = url.pathname === "/admin" || url.pathname.startsWith("/admin/");
+    const isLoginPath = url.pathname === "/admin/login";
+    return url.origin === window.location.origin && isAdminPath && !isLoginPath
+      ? `${url.pathname}${url.search}${url.hash}`
+      : "/admin";
+  } catch {
+    return "/admin";
+  }
+}
+
 export default function AdminLoginPage() {
   const router = useRouter();
   const [password, setPassword] = useState("");
@@ -20,7 +35,7 @@ export default function AdminLoginPage() {
         body: JSON.stringify({ password }),
       });
       if (res.ok) {
-        const from = new URLSearchParams(window.location.search).get("from") || "/admin";
+        const from = safeRedirectPath(new URLSearchParams(window.location.search).get("from"));
         router.replace(from);
         router.refresh();
       } else {
@@ -35,7 +50,7 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#080808] px-5 text-white">
+    <main className="flex min-h-screen items-center justify-center bg-dark-bg px-5 text-white">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-sm rounded-2xl border border-white/10 bg-white/[0.03] p-8"

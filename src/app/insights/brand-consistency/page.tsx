@@ -74,7 +74,7 @@ export default function ArticlePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <div className="bg-light-bg dark:bg-[#080808]">
+      <div className="bg-light-bg dark:bg-dark-bg">
       <ServicePageHeader
         title="The Brand Mistake Costing Businesses Trust"
         backHref="/insights"

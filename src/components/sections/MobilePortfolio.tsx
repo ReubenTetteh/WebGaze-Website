@@ -125,7 +125,7 @@ export default function MobilePortfolio({
   return (
     <section
       aria-labelledby="mobile-portfolio-heading"
-      className="relative overflow-hidden bg-[#080808] py-16"
+      className="relative overflow-hidden bg-dark-bg py-16"
     >
       {/* ambient glow to match the desktop section */}
       <div
@@ -201,17 +201,14 @@ export default function MobilePortfolio({
                   <h3 className="mt-2 font-display text-xl font-bold leading-tight text-white">
                     {product.title}
                   </h3>
-                  {product.year && (
-                    <p className="mt-1 text-xs text-neutral-400">{product.year}</p>
-                  )}
 
                   <Link
                     href={product.link}
                     aria-label={`View ${product.title}`}
-                    className="mt-5 inline-flex h-11 items-center gap-2 rounded-full bg-white px-6 font-display text-xs font-bold uppercase tracking-[0.16em] text-black transition-transform active:scale-95"
+                    className="group mt-4 inline-flex items-center gap-1.5 font-display text-[12px] font-semibold uppercase tracking-[0.16em] text-white/70 transition-colors hover:text-white"
                   >
                     View project
-                    <span aria-hidden>↗</span>
+                    <span aria-hidden className="inline-block transition-transform group-hover:translate-x-0.5">→</span>
                   </Link>
                 </div>
               </div>

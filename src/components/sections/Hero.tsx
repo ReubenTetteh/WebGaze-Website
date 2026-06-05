@@ -21,11 +21,11 @@ function GeometricBg() {
       transition={{ duration: 1.6, ease: [0.25, 0.1, 0.25, 1] }}
     >
       {/* Grid lines */}
-      <line x1="200" y1="0" x2="200" y2="800" stroke="#E01B24" strokeWidth="0.5" />
-      <line x1="400" y1="0" x2="400" y2="800" stroke="#E01B24" strokeWidth="0.5" />
-      <line x1="0" y1="200" x2="800" y2="200" stroke="#E01B24" strokeWidth="0.5" />
-      <line x1="0" y1="400" x2="800" y2="400" stroke="#E01B24" strokeWidth="0.5" />
-      <line x1="0" y1="600" x2="800" y2="600" stroke="#E01B24" strokeWidth="0.5" />
+      <line x1="200" y1="0" x2="200" y2="800" stroke="#ffffff" strokeWidth="0.5" />
+      <line x1="400" y1="0" x2="400" y2="800" stroke="#ffffff" strokeWidth="0.5" />
+      <line x1="0" y1="200" x2="800" y2="200" stroke="#ffffff" strokeWidth="0.5" />
+      <line x1="0" y1="400" x2="800" y2="400" stroke="#ffffff" strokeWidth="0.5" />
+      <line x1="0" y1="600" x2="800" y2="600" stroke="#ffffff" strokeWidth="0.5" />
 
       {/* Concentric arcs — top */}
       {[30, 55, 80, 105, 130, 155, 180].map((r, i) => (
@@ -33,7 +33,7 @@ function GeometricBg() {
           key={`arc-tl-${i}`}
           d={`M ${200 - r} 400 A ${r} ${r} 0 0 1 ${200 + r} 400`}
           fill="none"
-          stroke="#E01B24"
+          stroke="#ffffff"
           strokeWidth="1.2"
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
@@ -47,7 +47,7 @@ function GeometricBg() {
           key={`arc-bl-${i}`}
           d={`M ${200 - r} 600 A ${r} ${r} 0 0 0 ${200 + r} 600`}
           fill="none"
-          stroke="#E01B24"
+          stroke="#ffffff"
           strokeWidth="1.2"
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
@@ -61,16 +61,16 @@ function GeometricBg() {
         animate={{ rotate: 360 }}
         transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
       >
-        <circle cx="400" cy="400" r="380" fill="none" stroke="#E01B24" strokeWidth="0.4" opacity="0.5" />
-        <circle cx="400" cy="400" r="280" fill="none" stroke="#E01B24" strokeWidth="0.4" opacity="0.4" strokeDasharray="2 8" />
+        <circle cx="400" cy="400" r="380" fill="none" stroke="#ffffff" strokeWidth="0.4" opacity="0.5" />
+        <circle cx="400" cy="400" r="280" fill="none" stroke="#ffffff" strokeWidth="0.4" opacity="0.4" strokeDasharray="2 8" />
       </motion.g>
 
-      <circle cx="200" cy="200" r="160" fill="none" stroke="#E01B24" strokeWidth="0.6" />
-      <circle cx="200" cy="200" r="120" fill="none" stroke="#E01B24" strokeWidth="0.4" />
+      <circle cx="200" cy="200" r="160" fill="none" stroke="#ffffff" strokeWidth="0.6" />
+      <circle cx="200" cy="200" r="120" fill="none" stroke="#ffffff" strokeWidth="0.4" />
 
-      {/* Filled accents */}
-      <path d="M 200 200 L 400 200 A 200 200 0 0 1 200 400 Z" fill="#E01B24" opacity="0.9" />
-      <path d="M 0 400 L 200 400 A 200 200 0 0 0 0 600 Z" fill="#333333" opacity="0.8" />
+      {/* Filled accents — one sparing red wedge, the rest neutral */}
+      <path d="M 200 200 L 400 200 A 200 200 0 0 1 200 400 Z" fill="#E01B24" opacity="0.55" />
+      <path d="M 0 400 L 200 400 A 200 200 0 0 0 0 600 Z" fill="#ffffff" opacity="0.16" />
     </motion.svg>
   );
 }
@@ -92,36 +92,14 @@ export default function Hero() {
       {/* Geometric brand artwork */}
       <GeometricBg />
 
-      {/* Subtle grid overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.025] pointer-events-none"
-        style={{
-          backgroundImage: `linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)`,
-          backgroundSize: "90px 90px",
-        }}
-      />
-
-      {/* Ambient red glow — anchored bottom-right */}
-      <div className="absolute -bottom-40 -right-40 w-[720px] h-[720px] bg-red-brand/10 blur-[160px] rounded-full pointer-events-none" />
+      {/* Ambient red glow — anchored bottom-right, kept subtle */}
+      <div className="absolute -bottom-40 -right-40 w-[720px] h-[720px] bg-red-brand/[0.06] blur-[160px] rounded-full pointer-events-none" />
 
       {/* Main content — right-aligned, kept within the container edge */}
       {/* w-full is required: this div is a flex item of the `flex flex-col` section,
           and container-wide's mx-auto would otherwise cancel the cross-axis stretch
           and shrink it to its content width, pulling the block off the site's right edge. */}
       <div className="container-wide w-full relative z-10 flex-1 flex flex-col justify-center items-end text-right pt-32 pb-12">
-          {/* Eyebrow */}
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="flex items-center justify-end gap-3 mb-8"
-          >
-            <span className="block w-8 h-[2px] bg-red-brand flex-shrink-0" />
-            <span className="font-display text-xs font-semibold tracking-[0.22em] uppercase text-red-brand">
-              Sydney Digital Agency · Est. 2019
-            </span>
-          </motion.div>
-
           {/* Headline — static brand statement */}
           <motion.h1
             initial={{ opacity: 0, y: 18 }}

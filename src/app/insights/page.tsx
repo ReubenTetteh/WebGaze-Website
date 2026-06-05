@@ -82,7 +82,7 @@ export default function InsightsPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <div className="bg-light-bg dark:bg-[#080808] min-h-screen">
+      <div className="bg-light-bg dark:bg-dark-bg min-h-screen">
       <ServicePageHeader title="Insights" backHref="/" />
 
       {/* Posts list */}
@@ -92,7 +92,7 @@ export default function InsightsPage() {
             <Link
               key={post.index}
               href={post.href}
-              className="group grid grid-cols-1 md:grid-cols-[72px_1fr_auto] gap-4 md:gap-10 items-start py-12 hover:bg-light-surface dark:hover:bg-white/[0.015] -mx-6 px-6 md:-mx-10 md:px-10 lg:-mx-16 lg:px-16 transition-colors duration-300"
+              className="group grid grid-cols-1 md:grid-cols-[72px_1fr_auto] gap-4 md:gap-10 items-start py-12 hover:bg-light-surface dark:hover:bg-white/[0.015] -mx-4 px-4 md:-mx-10 md:px-10 lg:-mx-16 lg:px-16 transition-colors duration-300"
             >
               {/* Index */}
               <span className="hidden md:block font-display font-black text-[2.5rem] leading-none text-[#0a0a0a]/10 dark:text-white/[0.06] mt-1 select-none">

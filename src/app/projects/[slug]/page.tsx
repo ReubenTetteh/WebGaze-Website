@@ -14,7 +14,16 @@ type ProjectDetailPageProps = {
 
 export function generateStaticParams() {
   return portfolioProjects
-    .filter((project) => !["care-partners-australia", "viride-energy-africa"].includes(project.slug))
+    .filter(
+      (project) =>
+        ![
+          "care-partners-australia",
+          "viride-energy-africa",
+          "phytoscience-australia",
+          "winstamac",
+          "salaka-dance-ensemble",
+        ].includes(project.slug),
+    )
     .map((project) => ({ slug: project.slug }));
 }
 
@@ -33,7 +42,7 @@ export function generateMetadata({ params }: ProjectDetailPageProps): Metadata {
       title: `${project.name} Portfolio Case Study | WebGaze`,
       description: project.summary,
       url: `https://webgaze.com.au/projects/${project.slug}`,
-      images: [{ url: project.image, width: 1200, height: 900, alt: project.name }],
+      images: [{ url: project.image, width: 1200, height: 900, alt: `${project.name} — ${project.industry} website designed and built by WebGaze` }],
     },
   };
 }
@@ -44,6 +53,8 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
   if (!project) {
     notFound();
   }
+
+  const isLongTitle = project.name.length > 26;
 
   return (
     <>
@@ -66,7 +77,13 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
               <p className="mb-4 inline-flex rounded-full border border-white/15 px-3 py-1 font-display text-[10px] font-bold uppercase tracking-[0.2em] text-white/60">
                 {project.tag} · {project.year}
               </p>
-              <h1 className="font-display text-[clamp(2.35rem,4.2vw,4.75rem)] font-bold leading-[1.02] tracking-[-0.035em]">
+              <h1
+                className={`text-balance font-display font-bold tracking-[-0.035em] ${
+                  isLongTitle
+                    ? "text-[clamp(2.05rem,3.1vw,3.45rem)] leading-[1.06]"
+                    : "text-[clamp(2.35rem,4.2vw,4.75rem)] leading-[1.02]"
+                }`}
+              >
                 {project.name}
               </h1>
               <p className="mt-6 max-w-[560px] font-body text-base leading-relaxed text-white/62 md:text-lg">
@@ -105,7 +122,7 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
 
             <ProjectHeroPreview
               src={project.fullPage ?? project.image}
-              alt={project.name}
+              alt={`${project.name} website homepage — ${project.industry} web design by WebGaze (${project.year})`}
               url={project.liveUrl ?? `${project.slug}.webgaze.com.au`}
               scroll={Boolean(project.fullPage)}
               priority
@@ -134,7 +151,7 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
         </div>
       </section>
 
-      <section className="bg-white py-16 dark:bg-[#080808]">
+      <section className="bg-white py-16 dark:bg-dark-bg">
         <div className="container-wide">
           <div className="mb-8 flex items-end justify-between gap-6">
             <div>
@@ -150,7 +167,7 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
           <div className="grid gap-5 md:grid-cols-2">
             {project.gallery.map((image) => (
               <div key={image} className="relative aspect-[4/3] overflow-hidden rounded-[8px] bg-[#eee] dark:bg-[#111]">
-                <Image src={image} alt={`${project.name} project visual`} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+                <Image src={image} alt={`${project.name} ${project.industry} website — design detail by WebGaze`} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
               </div>
             ))}
           </div>

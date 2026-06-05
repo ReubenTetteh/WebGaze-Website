@@ -70,7 +70,7 @@ export default function ServicePageHeader({
             initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.08, ease: [0.25, 0.1, 0.25, 1] }}
-            className="font-display font-bold text-display-xl text-white leading-[1.04] max-w-[18ch]"
+            className="font-display font-bold text-white max-w-[18ch] text-[clamp(2.55rem,10.5vw,3.7rem)] leading-[1.02] tracking-[-0.035em] lg:text-display-xl lg:leading-[1.04] lg:tracking-[-0.04em]"
           >
             {title}
           </motion.h1>

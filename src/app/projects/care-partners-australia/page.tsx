@@ -7,7 +7,7 @@ import { getProject } from "@/lib/projects";
 
 const project = getProject("care-partners-australia");
 
-const heroPreview = "/portfolio/care-partners-fullpage.png";
+const heroPreview = "/portfolio/cpa/care-partners-australia-homepage-fullpage.webp";
 
 export const metadata: Metadata = {
   title: "Care Partners Australia Portfolio Case Study",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "Care Partners Australia Portfolio Case Study | WebGaze",
     description: project?.summary,
     url: "https://webgaze.com.au/projects/care-partners-australia",
-    images: [{ url: project?.image ?? heroPreview, width: 1200, height: 900, alt: "Care Partners Australia website" }],
+    images: [{ url: project?.image ?? heroPreview, width: 1200, height: 900, alt: "Care Partners Australia — NDIS & disability support website designed and built by WebGaze" }],
   },
 };
 
@@ -86,7 +86,7 @@ export default function CarePartnersPage() {
 
             <ProjectHeroPreview
               src={heroPreview}
-              alt="Care Partners Australia website"
+              alt={`${project.name} website homepage — ${project.industry} web design by WebGaze (${project.year})`}
               url="carepartnersau.com.au"
               scroll
               priority
@@ -115,7 +115,7 @@ export default function CarePartnersPage() {
         </div>
       </section>
 
-      <section className="bg-white py-16 dark:bg-[#080808]">
+      <section className="bg-white py-16 dark:bg-dark-bg">
         <div className="container-wide">
           <div className="mb-8 flex items-end justify-between gap-6">
             <div>
@@ -129,9 +129,9 @@ export default function CarePartnersPage() {
           </div>
 
           <div className="grid gap-5 md:grid-cols-2">
-            {["/portfolio/cpa/Scene-2.png", "/portfolio/cpa/ghyt.jpg"].map((image) => (
+            {["/portfolio/cpa/care-partners-australia-gallery-1.webp", "/portfolio/cpa/care-partners-australia-gallery-2.jpg"].map((image) => (
               <div key={image} className="relative aspect-[4/3] overflow-hidden rounded-[8px] bg-[#eee] dark:bg-[#111]">
-                <Image src={image} alt="Care Partners Australia project visual" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+                <Image src={image} alt={`${project.name} ${project.industry} website — design detail by WebGaze`} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
               </div>
             ))}
           </div>

@@ -72,7 +72,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Search
   };
 
   return (
-    <main className="min-h-screen bg-[#080808] px-5 py-8 text-white md:px-10">
+    <main className="min-h-screen bg-dark-bg px-5 py-8 text-white md:px-10">
       <div className="mx-auto max-w-[1200px]">
         {/* Header */}
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">

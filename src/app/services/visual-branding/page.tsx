@@ -3,6 +3,7 @@ import Link from "next/link";
 import ServicePageHeader from "@/components/sections/ServicePageHeader";
 import AnimateIn from "@/components/ui/AnimateIn";
 import CTA from "@/components/sections/CTA";
+import ProcessScroller from "@/components/services/ProcessScroller";
 
 export const metadata: Metadata = {
   title: "Brand Identity Design Sydney | Logo & Visual Branding | WebGaze",
@@ -58,17 +59,17 @@ const tags = ["Logo Design", "Graphic Design", "Brand Guide", "Colour Systems", 
 
 const processSteps = [
   {
-    num: "01",
+    label: "01",
     title: "Brand Discovery",
     desc: "We start by understanding your business, your audience, and your competitors — giving us the insight to make design decisions that are strategic, not just aesthetic.",
   },
   {
-    num: "02",
+    label: "02",
     title: "Concept & Design",
     desc: "We develop visual concepts — logo directions, colour palettes, and type pairings — and refine them with you through a structured feedback process until the identity is exactly right.",
   },
   {
-    num: "03",
+    label: "03",
     title: "Guidelines & Handover",
     desc: "Once approved, everything is packaged into a brand guidelines document and delivered in all the formats you need — ready to use across digital and print.",
   },
@@ -150,36 +151,16 @@ export default function VisualBrandingPage() {
         </div>
       </section>
 
-      {/* Process — DARK */}
-      <section className="section-pad bg-[#0d0d0d]">
-        <div className="container-wide">
-          <AnimateIn>
-            <span className="label-tag">Our Branding Process</span>
-            <h2 className="mt-5 font-display font-bold text-display-md text-white max-w-xl leading-[1.1]">
-              How we build a brand that sticks.
-            </h2>
-            <p className="mt-5 font-body text-base text-dark-muted max-w-2xl leading-relaxed">
-              From research and strategy through to final assets — every step is deliberate, collaborative, and focused on creating something that genuinely represents your business.
-            </p>
-          </AnimateIn>
+      {/* Process — DARK (sticky-scroll) */}
+      <ProcessScroller
+        eyebrow="Our Branding Process"
+        heading="How we build a brand that sticks."
+        intro="From research and strategy through to final assets — every step is deliberate, collaborative, and focused on creating something that genuinely represents your business."
+        stages={processSteps}
+        bg="#0d0d0d"
+      />
 
-          <div className="mt-16 divide-y divide-dark-border border-t border-dark-border">
-            {processSteps.map((step, i) => (
-              <AnimateIn key={step.num} delay={i * 0.1}>
-                <div className="grid grid-cols-1 lg:grid-cols-[80px_1fr] gap-6 lg:gap-12 py-12 items-start">
-                  <span className="font-display font-bold text-5xl text-red-brand/20 select-none leading-none">{step.num}</span>
-                  <div>
-                    <h3 className="font-display font-bold text-2xl text-white">{step.title}</h3>
-                    <p className="mt-3 font-body text-base text-dark-muted leading-relaxed max-w-2xl">{step.desc}</p>
-                  </div>
-                </div>
-              </AnimateIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <CTA />
+      <CTA lead="Look like the business" accent="you're becoming" />
     </>
   );
 }

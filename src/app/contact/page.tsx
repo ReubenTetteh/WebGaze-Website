@@ -100,12 +100,14 @@ export default function ContactPage() {
   };
 
   const inputBase =
-    "w-full bg-white/60 dark:bg-white/[0.03] border rounded-xl pl-11 pr-4 py-3.5 text-sm font-body " +
+    "w-full bg-white/60 dark:bg-white/[0.03] border rounded-xl pl-4 sm:pl-11 pr-4 py-3.5 text-sm font-body " +
     "placeholder:text-[#9a9a9a] dark:placeholder:text-[#5a5a5a] dark:text-white " +
     "focus:outline-none focus:ring-2 transition-all duration-200 backdrop-blur-sm";
 
+  // Leading icon sits inside the field on tablet/desktop only. On phones it is
+  // hidden so the input border stretches full-width with balanced padding.
   const fieldIcon =
-    "absolute left-4 top-1/2 -translate-y-1/2 text-[#b5b5b5] dark:text-[#555] peer-focus:text-red-brand transition-colors duration-200 pointer-events-none";
+    "hidden sm:block absolute left-4 top-1/2 -translate-y-1/2 text-[#b5b5b5] dark:text-[#555] peer-focus:text-red-brand transition-colors duration-200 pointer-events-none";
 
   return (
     <>
@@ -139,29 +141,12 @@ export default function ContactPage() {
 
             {/* Left — info */}
             <div className="lg:sticky lg:top-28">
-              {/* Availability badge */}
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="inline-flex items-center gap-2 rounded-full border border-light-border dark:border-dark-border bg-white/50 dark:bg-white/[0.03] backdrop-blur-sm px-4 py-2"
-              >
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-                </span>
-                <span className="text-xs font-display font-semibold tracking-[0.12em] uppercase text-light-muted dark:text-dark-muted">
-                  Available for new projects
-                </span>
-              </motion.div>
-
               <motion.h2
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.05 }}
-                className="mt-6 font-display font-bold text-display-md dark:text-white leading-[1.1]"
+                className="font-display font-bold text-display-md dark:text-white leading-[1.1]"
               >
                 Let&apos;s build something{" "}
                 <span className="text-red-brand">worth looking at.</span>
@@ -240,7 +225,7 @@ export default function ContactPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="relative rounded-3xl border border-light-border dark:border-dark-border bg-white/70 dark:bg-white/[0.025] backdrop-blur-xl p-7 sm:p-10 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.25)]"
+              className="relative rounded-3xl border border-light-border dark:border-dark-border bg-white/70 dark:bg-white/[0.025] backdrop-blur-xl px-4 py-7 sm:p-10 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.25)]"
             >
               {/* top gradient hairline */}
               <div aria-hidden className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-red-brand/50 to-transparent" />

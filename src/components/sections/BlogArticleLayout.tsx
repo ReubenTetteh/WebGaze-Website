@@ -81,7 +81,7 @@ export default function BlogArticleLayout({
         />
       </div>
 
-      <div className="bg-light-bg dark:bg-[#080808] min-h-screen">
+      <div className="bg-light-bg dark:bg-dark-bg min-h-screen">
         <div className="container-wide py-14 xl:py-20">
           <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr_268px] gap-8 xl:gap-14">
 

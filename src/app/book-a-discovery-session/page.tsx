@@ -97,7 +97,7 @@ export default function BookDiscoverySessionPage() {
     <>
       <ServicePageHeader
         title="Book a Free Discovery Session"
-        tag="Systems & Automation"
+        tag="AI & Custom Business Systems"
         subtitle="Tell us what's slowing your team down. We'll listen, then show you how a custom system could take it off your plate."
         backHref="/services/systems-automation"
       />

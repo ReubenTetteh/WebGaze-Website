@@ -3,7 +3,9 @@ import { render } from "@react-email/components";
 import { NextResponse } from "next/server";
 import QuoteEmail from "@/emails/QuoteEmail";
 import { failsBasicBotChecks, verifyTurnstile, getClientIp } from "@/lib/antiBot";
+import { isValidEmail, isValidPhone, textField, textListField } from "@/lib/formValidation";
 import { saveLead } from "@/lib/leads";
+import { forwardToOs } from "@/lib/intake";
 
 export async function POST(req: Request) {
   try {
@@ -13,7 +15,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Email service not configured." }, { status: 500 });
     }
 
-    const body = await req.json();
+    let body: Record<string, unknown>;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid request." }, { status: 400 });
+    }
 
     // Honeypot / time-gate: silently accept so bots don't learn, but send nothing.
     if (failsBasicBotChecks(body)) {
@@ -24,20 +31,44 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Verification failed. Please try again." }, { status: 400 });
     }
 
-    const { firstName, lastName, email, phone, services, budget, message } = body;
+    const firstName = textField(body.firstName, 80);
+    const lastName = textField(body.lastName, 80);
+    const email = textField(body.email, 254);
+    const phone = textField(body.phone, 30);
+    const services = textListField(body.services);
+    const budget = textField(body.budget, 120);
+    const message = textField(body.message, 5000);
 
-    if (!firstName || !email || !phone || !message || !services?.length) {
+    if (
+      firstName === null ||
+      lastName === null ||
+      email === null ||
+      phone === null ||
+      services === null ||
+      budget === null ||
+      message === null
+    ) {
+      return NextResponse.json({ error: "Invalid fields." }, { status: 400 });
+    }
+
+    if (!firstName || !email || !phone || !message || !budget || services.length === 0) {
       return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
+    }
+    if (!isValidEmail(email) || !isValidPhone(phone)) {
+      return NextResponse.json({ error: "Invalid contact details." }, { status: 400 });
     }
 
     // Persist the lead. Never let a DB issue break the email path.
     await saveLead({
       type: "quote",
       firstName, lastName, email, phone,
-      service: Array.isArray(services) ? services.join(", ") : services,
+      service: services.join(", "),
       budget, message,
       data: { services, budget },
     }).catch((e) => console.error("saveLead (quote) failed:", e));
+
+    // Hand the lead to WebGaze OS for the instant acknowledgement + auto-quote.
+    await forwardToOs({ type: "quote", firstName, lastName, email, phone, services, budget, message });
 
     const html = await render(
       QuoteEmail({ firstName, lastName, email, phone, services, budget, message })

@@ -45,8 +45,8 @@ export default function Process() {
   }
 
   return (
-    <section className="relative bg-[#080808] overflow-hidden section-pad">
-      {/* hairline seam — the portfolio above shares this near-black, so mark the join */}
+    <section className="relative bg-dark-surface overflow-hidden section-pad">
+      {/* hairline seam — marks the join with the deeper portfolio band above */}
       <div className="absolute top-0 inset-x-0 h-px bg-white/10" />
 
       {/* soft red glow to keep it from feeling flat */}
@@ -97,7 +97,7 @@ export default function Process() {
               >
                 {/* number node — solid bg cuts the track so it reads as a stop */}
                 <div className="relative z-10 mb-7">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-[#080808] font-display font-bold text-sm tracking-[0.1em] text-red-brand">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-dark-bg font-display font-bold text-sm tracking-[0.1em] text-red-brand">
                     {step.num}
                   </span>
                 </div>

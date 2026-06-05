@@ -14,10 +14,10 @@ export const metadata: Metadata = {
     description: summary,
     images: [
       {
-        url: "/portfolio/agcci-temp/home-full.png",
+        url: "/portfolio/agcci-temp/agcci-homepage-fullpage.jpg",
         width: 1200,
         height: 900,
-        alt: "AGCCI website",
+        alt: "Australian Ghanaian Chamber of Commerce — business & trade website designed and built by WebGaze",
       },
     ],
   },

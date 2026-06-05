@@ -1,142 +1,79 @@
 "use client";
 
 import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
 import { motion } from "framer-motion";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import MobileCta from "./MobileCta";
 
-function VerticalMarquee({
-  children,
-  pauseOnHover = true,
-  reverse = false,
-  className,
-  speed = 24,
-}: {
-  children: ReactNode;
-  pauseOnHover?: boolean;
-  reverse?: boolean;
-  className?: string;
-  speed?: number;
-}) {
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+// CTA copy. `lead` renders in white, `accent` in faded white — together they
+// form one short, punchy line: `{lead} {accent}.`
+export type CtaProps = {
+  eyebrow?: string;
+  lead?: string;
+  accent?: string;
+};
+
+// Default = the general CTA used on home / about / projects / services index.
+const DEFAULT_COPY = {
+  eyebrow: "No pressure. Just next steps.",
+  lead: "Let's build something that",
+  accent: "earns its keep",
+};
+
+export default function CTA(props: CtaProps = {}) {
+  const isMobile = useIsMobile();
+  const copy = {
+    eyebrow: props.eyebrow ?? DEFAULT_COPY.eyebrow,
+    lead: props.lead ?? DEFAULT_COPY.lead,
+    accent: props.accent ?? DEFAULT_COPY.accent,
+  };
+
+  // Phones get the v2-style full-screen section with in-page modal.
+  if (isMobile) {
+    return <MobileCta {...copy} />;
+  }
+
+  // Desktop — clean, thin CTA row shared site-wide. No vertical marquee.
   return (
-    <div
-      className={cn("group flex flex-col overflow-hidden", className)}
-      style={{ "--duration": `${speed}s` } as React.CSSProperties}
-    >
-      {[0, 1].map((i) => (
-        <div
-          key={i}
-          aria-hidden={i === 1}
-          className={cn(
-            "flex shrink-0 flex-col animate-marquee-vertical",
-            reverse && "[animation-direction:reverse]",
-            pauseOnHover && "group-hover:[animation-play-state:paused]"
-          )}
-        >
-          {children}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// Who we build for — scrolls beside the final ask.
-const audiences = [
-  "Care Providers",
-  "Startups & Founders",
-  "Trades & Services",
-  "Real Estate",
-  "Energy & Industry",
-  "Health & Wellness",
-  "Local Businesses",
-];
-
-export default function CTA() {
-  return (
-    <section className="relative overflow-hidden bg-dark-bg py-24 md:py-32">
-      {/* Red glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute right-[12%] top-1/2 -translate-y-1/2 w-[600px] h-[500px] bg-red-brand opacity-[0.07] blur-[120px] rounded-full" />
-      </div>
-
-      {/* Top border line */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-dark-border" />
-
+    <section className="relative overflow-hidden bg-[#0a0a0a] py-10 md:py-14">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute right-[8%] top-1/2 h-56 w-[420px] -translate-y-1/2 rounded-full bg-red-brand opacity-[0.07] blur-[120px]"
+      />
+      <motion.div
+        aria-hidden
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.9, ease: EASE }}
+        className="absolute inset-x-0 top-0 h-[2px] origin-left bg-red-brand"
+      />
       <div className="container-wide relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-
-          {/* Left — the ask */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-            className="max-w-xl"
-          >
-            <p className="font-display text-xs font-semibold tracking-[0.25em] uppercase text-red-brand mb-6">
-              No pressure. Just next steps.
+        <div className="flex flex-col gap-7 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <p className="font-display text-[10px] font-bold uppercase tracking-[0.24em] text-red-brand">
+              {copy.eyebrow}
             </p>
-            <h2 className="font-display font-bold text-[clamp(2.75rem,6vw,5rem)] text-white leading-[0.98] tracking-[-0.03em]">
-              Let&apos;s get<br />started.
-            </h2>
-            <p className="font-display font-medium text-lg md:text-xl text-[#888] leading-snug mt-8 mb-10">
-              Tell us where you are and where you&apos;re headed.{" "}
-              <span className="text-white">We&apos;ll handle the strategy, design, and build.</span>
+            <p className="mt-3 max-w-[24ch] font-display text-2xl font-bold leading-[1.1] tracking-[-0.02em] text-white md:text-[2rem]">
+              {copy.lead}{" "}
+              <span className="text-white/45">{copy.accent}</span>.
             </p>
-
-            <div className="flex flex-wrap gap-4">
-              <Link
-                href="/request-a-quote"
-                className="group relative overflow-hidden rounded-full bg-red-brand px-8 py-4
-                           font-display text-sm font-bold uppercase tracking-[0.15em] text-white
-                           transition-colors duration-300 hover:bg-red-dark"
-              >
-                <span className="relative z-10 inline-flex items-center gap-2">
-                  Request a Proposal <span className="text-base">→</span>
-                </span>
-                <span className="absolute inset-0 -translate-x-[200%] bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-[200%]" />
-              </Link>
-
-              <a
-                href="mailto:hello@webgaze.com.au"
-                className="rounded-full border border-white/20 px-8 py-4
-                           font-display text-sm font-bold uppercase tracking-[0.15em] text-white
-                           transition-colors duration-300 hover:border-red-brand hover:text-red-brand"
-              >
-                Email Us
-              </a>
-            </div>
-
-            <p className="font-body text-xs text-[#555] mt-6">
-              We typically respond within 1 business day.
-            </p>
-          </motion.div>
-
-          {/* Right — vertical marquee of who we build for.
-              A CSS mask fades the top/bottom toward the section so the centre
-              reads brightest — no per-frame JS measuring required. */}
-          <div
-            className="relative hidden h-[360px] overflow-hidden sm:block lg:h-[560px]"
-            style={{
-              maskImage:
-                "linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent)",
-              WebkitMaskImage:
-                "linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent)",
-            }}
-          >
-            <VerticalMarquee speed={22} className="h-full">
-              {audiences.map((item) => (
-                <div
-                  key={item}
-                  className="py-6 font-display font-semibold tracking-[-0.02em] text-white
-                             text-4xl md:text-5xl lg:text-6xl"
-                >
-                  {item}
-                </div>
-              ))}
-            </VerticalMarquee>
           </div>
-
+          <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+            <Link href="/request-a-quote" className="btn-primary justify-center">
+              Request a Proposal
+              <span aria-hidden="true">→</span>
+            </Link>
+            <Link
+              href="/book-a-discovery-session"
+              className="btn-outline justify-center border-white/30 text-white hover:border-red-brand"
+            >
+              Book Discovery Call
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
         </div>
       </div>
     </section>

@@ -22,6 +22,17 @@ const serviceLinks = [
     ),
   },
   {
+    label: "AI & Custom Business Systems",
+    short: "Custom apps, automations, and AI-assisted tools.",
+    href: "/services/systems-automation",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+        <circle cx="12" cy="12" r="3" />
+        <path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" />
+      </svg>
+    ),
+  },
+  {
     label: "Visual Branding",
     short: "Cohesive brand identities that make you unmistakable.",
     href: "/services/visual-branding",
@@ -68,17 +79,6 @@ const serviceLinks = [
       </svg>
     ),
   },
-  {
-    label: "Systems & Automation",
-    short: "Custom tools and AI that take the busywork off your plate.",
-    href: "/services/systems-automation",
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-        <circle cx="12" cy="12" r="3" />
-        <path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" />
-      </svg>
-    ),
-  },
 ];
 
 const navLinks = [
@@ -94,10 +94,12 @@ export default function Navbar() {
   const pathname = usePathname();
   const [surfaceIsLight, setSurfaceIsLight] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileView, setMobileView] = useState<"main" | "services">("main");
   const [servicesOpen, setServicesOpen] = useState(false);
   const [hoveredNav, setHoveredNav] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  // Mobile bar reveals on scroll-up, hides on scroll-down.
+  const [hideBar, setHideBar] = useState(false);
   const { theme } = useTheme();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const servicesButtonRef = useRef<HTMLButtonElement>(null);
@@ -162,6 +164,25 @@ export default function Navbar() {
     };
   }, [pathname]);
 
+  // Track scroll direction so the mobile bar hides on the way down and slides
+  // back in the moment the user scrolls up.
+  useEffect(() => {
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const delta = y - lastY;
+      if (Math.abs(delta) < 6) return; // ignore jitter
+      if (delta > 0 && y > 100) {
+        setHideBar(true); // scrolling down, past the hero
+      } else if (delta < 0) {
+        setHideBar(false); // scrolling up
+      }
+      lastY = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -183,7 +204,7 @@ export default function Navbar() {
   useEffect(() => {
     setMenuOpen(false);
     setServicesOpen(false);
-    setMobileServicesOpen(false);
+    setMobileView("main");
     setHoveredNav(null);
   }, [pathname]);
 
@@ -197,9 +218,12 @@ export default function Navbar() {
     };
   }, [menuOpen]);
 
-  // Reset the services accordion whenever the menu fully closes.
+  // Reset the drawer to the main view after it has finished closing — delay so
+  // the user doesn't see the submenu snap away mid-exit animation.
   useEffect(() => {
-    if (!menuOpen) setMobileServicesOpen(false);
+    if (menuOpen) return;
+    const t = window.setTimeout(() => setMobileView("main"), 320);
+    return () => window.clearTimeout(t);
   }, [menuOpen]);
 
   const servicesMenuId = "services-menu";
@@ -265,17 +289,37 @@ export default function Navbar() {
     ? "/images/logo-dark-cropped.png"
     : "/images/logo-white-cropped.png";
 
+  // Hide the mobile bar while scrolling down, but never while the menu is open.
+  const barHidden = hideBar && !menuOpen;
+  const barHideMobile = barHidden
+    ? "max-lg:-translate-y-[150%] max-lg:opacity-0"
+    : "max-lg:translate-y-0 max-lg:opacity-100";
+
   return (
     <>
       <header
         className="fixed inset-x-0 top-5 z-[100] overflow-visible"
       >
         <div className="container-wide relative flex items-center justify-between">
+          {/* Mobile bar — hangs from the top edge (no top gap, no top border),
+              giving the logo + menu button a single translucent surface. Slides
+              away on scroll-down and returns on scroll-up. */}
+          <div
+            aria-hidden
+            className={cn(
+              "pointer-events-none absolute -top-5 -inset-x-3 -bottom-2 rounded-b-2xl border border-t-0 backdrop-blur-xl transition-[transform,opacity,background-color,border-color,box-shadow] duration-300 ease-out lg:hidden",
+              shellClass,
+              barHidden ? "-translate-y-[150%] opacity-0" : "translate-y-0 opacity-100"
+            )}
+          />
           <Link
             href="/"
             aria-label="WebGaze home"
             onClick={() => setMenuOpen(false)}
-            className="flex h-10 shrink-0 items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-brand focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+            className={cn(
+              "relative z-10 flex h-10 shrink-0 items-center rounded-full transition-[transform,opacity] duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-brand focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+              barHideMobile
+            )}
           >
             <Image
               src={logoSrc}
@@ -437,12 +481,13 @@ export default function Navbar() {
             Request a Proposal
           </Link>
 
-          {/* Hamburger */}
+          {/* Hamburger — sits inside the mobile bar, so no pill of its own */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className={cn(
-              "flex h-10 w-10 flex-col items-center justify-center gap-[5px] rounded-full border backdrop-blur-xl transition-colors lg:hidden",
-              shellClass
+              "relative z-10 flex h-10 w-10 flex-col items-center justify-center gap-[5px] rounded-full transition-[transform,opacity,color] duration-300 ease-out lg:hidden",
+              shellIsLight ? "text-[#0a0a0a] dark:text-white" : "text-white",
+              barHidden ? "-translate-y-[150%] opacity-0" : "translate-y-0 opacity-100"
             )}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
@@ -455,202 +500,210 @@ export default function Navbar() {
 
       </header>
 
-      {/* Mobile Menu — full-screen editorial overlay */}
+      {/* Mobile Menu — right-side drawer with iOS-style stacked submenu */}
       <AnimatePresence>
         {menuOpen && (
-          <motion.div
-            key="mobile-menu"
-            initial="closed"
-            animate="open"
-            exit="closed"
-            variants={{
-              open: { transition: { staggerChildren: 0.055, delayChildren: 0.18 } },
-              closed: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
-            }}
-            className="fixed inset-0 z-[90] flex flex-col overflow-y-auto bg-[#0a0a0a] text-white lg:hidden"
-          >
-            {/* Curtain that drops over the page */}
+          <div key="mobile-drawer" className="fixed inset-0 z-[90] lg:hidden">
+            {/* Backdrop */}
             <motion.div
-              variants={{
-                open: { y: "0%", transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] } },
-                closed: { y: "-100%", transition: { duration: 0.4, ease: [0.76, 0, 0.24, 1] } },
-              }}
-              className="pointer-events-none absolute inset-0 bg-[#0a0a0a]"
-            />
-            {/* Ambient brand glow */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -top-32 left-1/2 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-red-brand/20 blur-[110px]"
+              key="mobile-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              onClick={() => setMenuOpen(false)}
+              className="absolute inset-0 bg-black/55 backdrop-blur-[2px]"
             />
 
-            <div className="relative flex min-h-full flex-col px-6 pb-10 pt-28 md:px-10">
-              {/* Eyebrow */}
-              <motion.p
-                variants={{
-                  open: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-                  closed: { opacity: 0, y: 8, transition: { duration: 0.2 } },
-                }}
-                className="mb-6 font-display text-[11px] font-semibold uppercase tracking-[0.32em] text-red-brand"
-              >
-                Menu
-              </motion.p>
+            {/* Drawer panel — slides in from the right */}
+            <motion.div
+              key="mobile-panel"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute right-0 top-0 flex h-full w-[88%] max-w-[420px] flex-col overflow-hidden bg-[#0a0a0a] text-white shadow-[-20px_0_60px_rgba(0,0,0,0.4)]"
+            >
+              {/* Ambient brand glow */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -top-32 -right-24 h-[360px] w-[360px] rounded-full bg-red-brand/20 blur-[110px]"
+              />
 
-              {/* Nav links */}
-              <nav className="flex flex-col">
-                {navLinks.map((link, i) => {
-                  const active = isNavActive(link.href);
-                  return (
-                    <motion.div
-                      key={link.label}
-                      variants={{
-                        open: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-                        closed: { opacity: 0, y: 24, transition: { duration: 0.25 } },
-                      }}
-                      className="border-b border-current/10"
-                    >
-                      <div className="flex items-center justify-between">
+              {/* Stacked views container */}
+              <div className="relative flex-1 overflow-hidden">
+                {/* Main view */}
+                <motion.div
+                  animate={{
+                    x: mobileView === "main" ? "0%" : "-30%",
+                    opacity: mobileView === "main" ? 1 : 0.4,
+                  }}
+                  transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute inset-0 flex flex-col overflow-y-auto px-6 pb-8 pt-20"
+                  aria-hidden={mobileView !== "main"}
+                >
+                  <p className="mb-4 font-display text-[10px] font-semibold uppercase tracking-[0.32em] text-red-brand">
+                    Menu
+                  </p>
+
+                  <nav className="flex flex-col">
+                    {navLinks.map((link, i) => {
+                      const active = isNavActive(link.href);
+                      if (link.dropdown) {
+                        return (
+                          <button
+                            key={link.label}
+                            type="button"
+                            onClick={() => setMobileView("services")}
+                            className="group flex items-center justify-between gap-4 border-b border-white/10 py-3 text-left"
+                          >
+                            <span className="flex items-baseline gap-3">
+                              <span
+                                className={cn(
+                                  "font-display text-[10px] font-semibold tabular-nums tracking-widest",
+                                  active ? "text-red-brand" : "text-white/35"
+                                )}
+                              >
+                                {String(i + 1).padStart(2, "0")}
+                              </span>
+                              <span
+                                className={cn(
+                                  "font-display text-[1.375rem] font-semibold leading-none tracking-tight transition-colors duration-200 group-hover:text-red-brand",
+                                  active ? "text-red-brand" : "text-white"
+                                )}
+                              >
+                                {link.label}
+                              </span>
+                            </span>
+                            <span className="font-display text-xl leading-none text-white/45 transition-colors group-hover:text-red-brand" aria-hidden>
+                              ›
+                            </span>
+                          </button>
+                        );
+                      }
+                      return (
                         <Link
+                          key={link.label}
                           href={link.href}
                           onClick={() => setMenuOpen(false)}
-                          className="group flex flex-1 items-baseline gap-4 py-4"
+                          className="group flex items-baseline gap-3 border-b border-white/10 py-3"
                         >
                           <span
                             className={cn(
-                              "font-display text-xs font-semibold tabular-nums tracking-widest transition-colors",
-                              active ? "text-red-brand" : "text-current/35"
+                              "font-display text-[10px] font-semibold tabular-nums tracking-widest",
+                              active ? "text-red-brand" : "text-white/35"
                             )}
                           >
                             {String(i + 1).padStart(2, "0")}
                           </span>
                           <span
                             className={cn(
-                              "font-display text-[2rem] font-semibold leading-none tracking-tight transition-colors duration-200 group-hover:text-red-brand",
+                              "font-display text-[1.375rem] font-semibold leading-none tracking-tight transition-colors duration-200 group-hover:text-red-brand",
                               active ? "text-red-brand" : "text-white"
                             )}
                           >
                             {link.label}
                           </span>
                         </Link>
+                      );
+                    })}
+                  </nav>
 
-                        {link.dropdown && (
-                          <button
-                            type="button"
-                            onClick={() => setMobileServicesOpen((v) => !v)}
-                            aria-label={mobileServicesOpen ? "Collapse services" : "Expand services"}
-                            aria-expanded={mobileServicesOpen}
-                            className="flex h-10 w-10 items-center justify-center rounded-full border border-current/15 text-current/70 transition-colors hover:border-red-brand hover:text-red-brand"
-                          >
-                            <motion.span
-                              animate={{ rotate: mobileServicesOpen ? 45 : 0 }}
-                              transition={{ duration: 0.25 }}
-                              className="text-xl leading-none"
-                            >
-                              +
-                            </motion.span>
-                          </button>
-                        )}
-                      </div>
+                  <div className="mt-6">
+                    <Link
+                      href="/request-a-quote"
+                      onClick={() => setMenuOpen(false)}
+                      className="flex h-12 items-center justify-center gap-2 rounded-xl bg-red-brand px-5 font-display text-sm font-semibold text-white shadow-[0_16px_40px_rgba(224,27,36,0.3)] transition-colors hover:bg-red-600"
+                    >
+                      Request a Proposal
+                      <span aria-hidden>→</span>
+                    </Link>
+                  </div>
 
-                      {/* Services accordion */}
-                      {link.dropdown && (
-                        <AnimatePresence initial={false}>
-                          {mobileServicesOpen && (
-                            <motion.div
-                              key="mobile-services"
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                              className="overflow-hidden"
-                            >
-                              <div className="grid grid-cols-1 gap-1 pb-4 pl-9 sm:grid-cols-2">
-                                {serviceLinks.map((sub) => (
-                                  <Link
-                                    key={sub.href}
-                                    href={sub.href}
-                                    onClick={() => setMenuOpen(false)}
-                                    className="group/mob flex items-center gap-3 rounded-xl py-2.5 pr-3 transition-colors"
-                                  >
-                                    <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-current/5 text-current/55 transition-colors group-hover/mob:bg-red-brand/15 group-hover/mob:text-red-brand">
-                                      {sub.icon}
-                                    </span>
-                                    <span className="font-display text-sm font-medium leading-snug text-white/70 transition-colors group-hover/mob:text-red-brand">
-                                      {sub.label}
-                                    </span>
-                                  </Link>
-                                ))}
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      )}
-                    </motion.div>
-                  );
-                })}
-              </nav>
+                  <div className="mt-auto flex flex-col gap-4 pt-8">
+                    <div className="flex flex-col gap-1">
+                      <a href="mailto:hello@webgaze.com.au" className="font-display text-[13px] font-medium text-white/70 transition-colors hover:text-red-brand">
+                        hello@webgaze.com.au
+                      </a>
+                      <a href="tel:0411078843" className="font-display text-[13px] font-medium text-white/70 transition-colors hover:text-red-brand">
+                        04 1107 8843
+                      </a>
+                    </div>
 
-              {/* CTA */}
-              <motion.div
-                variants={{
-                  open: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-                  closed: { opacity: 0, y: 24, transition: { duration: 0.25 } },
-                }}
-                className="mt-8"
-              >
-                <Link
-                  href="/request-a-quote"
-                  onClick={() => setMenuOpen(false)}
-                  className="flex h-14 items-center justify-center gap-2 rounded-2xl bg-red-brand px-6 font-display text-base font-semibold text-white shadow-[0_16px_40px_rgba(224,27,36,0.3)] transition-colors hover:bg-red-600"
+                    <div className="flex items-center gap-3">
+                      <a href="https://www.linkedin.com/company/webgaze" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"
+                         className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/65 transition-colors hover:border-red-brand hover:text-red-brand">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                          <rect x="2" y="9" width="4" height="12"/>
+                          <circle cx="4" cy="4" r="2"/>
+                        </svg>
+                      </a>
+                      <a href="https://www.instagram.com/webgaze.au" target="_blank" rel="noopener noreferrer" aria-label="Instagram"
+                         className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/65 transition-colors hover:border-red-brand hover:text-red-brand">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                        </svg>
+                      </a>
+                      <a href="https://x.com/webgaze_au" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)"
+                         className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/65 transition-colors hover:border-red-brand hover:text-red-brand">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Services submenu view */}
+                <motion.div
+                  initial={{ x: "100%" }}
+                  animate={{ x: mobileView === "services" ? "0%" : "100%" }}
+                  transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute inset-0 flex flex-col overflow-y-auto bg-[#0a0a0a] px-6 pb-8 pt-20"
+                  aria-hidden={mobileView !== "services"}
                 >
-                  Request a Proposal
-                  <span aria-hidden>→</span>
-                </Link>
-              </motion.div>
+                  <button
+                    type="button"
+                    onClick={() => setMobileView("main")}
+                    className="mb-5 flex items-center gap-2 self-start font-display text-xs font-semibold text-white/65 transition-colors hover:text-red-brand"
+                  >
+                    <span aria-hidden className="text-xl leading-none">‹</span>
+                    <span className="uppercase tracking-[0.28em] text-[10px]">Back</span>
+                  </button>
 
-              {/* Footer — contact + socials */}
-              <motion.div
-                variants={{
-                  open: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-                  closed: { opacity: 0, y: 24, transition: { duration: 0.25 } },
-                }}
-                className="mt-auto flex flex-col gap-5 pt-10"
-              >
-                <div className="flex flex-col gap-1">
-                  <a href="mailto:hello@webgaze.com.au" className="font-display text-sm font-medium text-white/70 transition-colors hover:text-red-brand">
-                    hello@webgaze.com.au
-                  </a>
-                  <a href="tel:0411078843" className="font-display text-sm font-medium text-white/70 transition-colors hover:text-red-brand">
-                    04 1107 8843
-                  </a>
-                </div>
+                  <p className="mb-5 font-display text-[1.375rem] font-semibold leading-none tracking-tight text-white">
+                    Services
+                  </p>
 
-                <div className="flex items-center gap-3">
-                  <a href="https://www.linkedin.com/company/webgaze" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"
-                     className="flex h-10 w-10 items-center justify-center rounded-full border border-current/15 text-current/65 transition-colors hover:border-red-brand hover:text-red-brand">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                      <rect x="2" y="9" width="4" height="12"/>
-                      <circle cx="4" cy="4" r="2"/>
-                    </svg>
-                  </a>
-                  <a href="https://www.instagram.com/webgaze.au" target="_blank" rel="noopener noreferrer" aria-label="Instagram"
-                     className="flex h-10 w-10 items-center justify-center rounded-full border border-current/15 text-current/65 transition-colors hover:border-red-brand hover:text-red-brand">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                    </svg>
-                  </a>
-                  <a href="https://x.com/webgaze_au" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)"
-                     className="flex h-10 w-10 items-center justify-center rounded-full border border-current/15 text-current/65 transition-colors hover:border-red-brand hover:text-red-brand">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                    </svg>
-                  </a>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
+                  <div className="flex flex-col">
+                    {serviceLinks.map((sub) => (
+                      <Link
+                        key={sub.href}
+                        href={sub.href}
+                        onClick={() => setMenuOpen(false)}
+                        className="group/mob flex items-center gap-3 border-b border-white/10 py-3"
+                      >
+                        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-white/5 text-white/65 transition-colors group-hover/mob:bg-red-brand/15 group-hover/mob:text-red-brand">
+                          {sub.icon}
+                        </span>
+                        <span className="flex flex-col">
+                          <span className="font-display text-sm font-semibold leading-snug text-white transition-colors group-hover/mob:text-red-brand">
+                            {sub.label}
+                          </span>
+                          <span className="font-display text-[11px] leading-snug text-white/55">
+                            {sub.short}
+                          </span>
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </>

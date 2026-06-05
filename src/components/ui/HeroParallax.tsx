@@ -68,7 +68,7 @@ export const HeroParallax = ({
     return (
       <section
         aria-labelledby="parallax-heading"
-        className="relative bg-[#080808] py-20 md:py-28 overflow-hidden"
+        className="relative bg-dark-bg py-20 md:py-28 overflow-hidden"
       >
         <AmbientGlow />
         <Header />
@@ -85,7 +85,7 @@ export const HeroParallax = ({
     <section
       ref={ref}
       aria-labelledby="parallax-heading"
-      className="relative bg-[#080808] antialiased h-[200vh] md:h-[220vh]"
+      className="relative bg-dark-bg antialiased h-[200vh] md:h-[220vh]"
     >
       <div className="sticky top-0 h-screen overflow-hidden flex flex-col [perspective:1000px] [transform-style:preserve-3d] pt-16 md:pt-20 pb-10">
         <AmbientGlow />

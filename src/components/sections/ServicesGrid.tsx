@@ -11,6 +11,12 @@ const services = [
     href: "/services/website-design",
   },
   {
+    title: "AI & Custom Business Systems",
+    desc: "We build custom tools, internal apps, automations, and AI-assisted systems that solve real business problems — from tracking work to managing learning, chats, records, and daily operations.",
+    tags: ["AI TOOLS", "AUTOMATION", "CUSTOM APPS"],
+    href: "/services/systems-automation",
+  },
+  {
     title: "Visual Branding",
     desc: "Visual branding is how people recognise your brand. We create cohesive brand visuals — from logos to colour systems — that help your business stand out, stay consistent, and connect with the right audience.",
     tags: ["GRAPHIC DESIGN", "LOGO DESIGN", "BRAND GUIDE"],
@@ -41,7 +47,7 @@ const CARD_STACK_OFFSET = 28;
 
 export default function ServicesGrid() {
   return (
-    <section className="bg-light-bg dark:bg-dark-bg py-20 md:py-28 lg:py-36">
+    <section className="bg-light-bg dark:bg-dark-surface py-20 md:py-28 lg:py-36 border-t border-light-border dark:border-dark-border">
       <div className="container-wide">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-14 lg:gap-20 items-start">
 
@@ -82,7 +88,7 @@ export default function ServicesGrid() {
                   zIndex: i + 1,
                 }}
               >
-                <div className="bg-white dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-2xl p-8 group
+                <div className="bg-white dark:bg-dark-elevated border border-light-border dark:border-dark-border rounded-2xl p-8 group
                                shadow-[0_4px_24px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.12)]
                                dark:shadow-[0_4px_32px_rgba(224,27,36,0.08)] dark:hover:shadow-[0_8px_48px_rgba(224,27,36,0.18)]
                                transition-all duration-300">

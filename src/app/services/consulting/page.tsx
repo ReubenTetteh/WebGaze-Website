@@ -3,6 +3,7 @@ import Link from "next/link";
 import ServicePageHeader from "@/components/sections/ServicePageHeader";
 import AnimateIn from "@/components/ui/AnimateIn";
 import CTA from "@/components/sections/CTA";
+import ProcessScroller from "@/components/services/ProcessScroller";
 
 export const metadata: Metadata = {
   title: "Website Audit & Digital Consulting Sydney | WebGaze",
@@ -58,17 +59,17 @@ const tags = ["SEO Audit", "Security Audit", "UI/UX Review", "Performance", "Str
 
 const processSteps = [
   {
-    num: "01",
+    label: "01",
     title: "Briefing & Access",
     desc: "We start with a conversation to understand your goals and concerns, then gather access to the tools and data needed to conduct a thorough review.",
   },
   {
-    num: "02",
+    label: "02",
     title: "Audit & Analysis",
-    desc: "We systematically review every layer of your site — performance, SEO, security, UX, and conversion flow — building a clear picture of what&apos;s working and what isn&apos;t.",
+    desc: "We systematically review every layer of your site — performance, SEO, security, UX, and conversion flow — building a clear picture of what's working and what isn't.",
   },
   {
-    num: "03",
+    label: "03",
     title: "Report & Recommendations",
     desc: "You receive a clear, prioritised report with plain-English findings and practical recommendations — ranked by impact so you know exactly where to focus first.",
   },
@@ -150,36 +151,16 @@ export default function ConsultingPage() {
         </div>
       </section>
 
-      {/* Process — DARK */}
-      <section className="section-pad bg-[#0d0d0d]">
-        <div className="container-wide">
-          <AnimateIn>
-            <span className="label-tag">Our Audit Process</span>
-            <h2 className="mt-5 font-display font-bold text-display-md text-white max-w-xl leading-[1.1]">
-              Clarity you can act on.
-            </h2>
-            <p className="mt-5 font-body text-base text-dark-muted max-w-2xl leading-relaxed">
-              No jargon, no fluff. Just an honest assessment of your site and a clear path forward — ranked by what will make the biggest difference.
-            </p>
-          </AnimateIn>
+      {/* Process — DARK (sticky-scroll) */}
+      <ProcessScroller
+        eyebrow="Our Audit Process"
+        heading="Clarity you can act on."
+        intro="No jargon, no fluff. Just an honest assessment of your site and a clear path forward — ranked by what will make the biggest difference."
+        stages={processSteps}
+        bg="#0d0d0d"
+      />
 
-          <div className="mt-16 divide-y divide-dark-border border-t border-dark-border">
-            {processSteps.map((step, i) => (
-              <AnimateIn key={step.num} delay={i * 0.1}>
-                <div className="grid grid-cols-1 lg:grid-cols-[80px_1fr] gap-6 lg:gap-12 py-12 items-start">
-                  <span className="font-display font-bold text-5xl text-red-brand/20 select-none leading-none">{step.num}</span>
-                  <div>
-                    <h3 className="font-display font-bold text-2xl text-white">{step.title}</h3>
-                    <p className="mt-3 font-body text-base text-dark-muted leading-relaxed max-w-2xl">{step.desc}</p>
-                  </div>
-                </div>
-              </AnimateIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <CTA />
+      <CTA lead="Know exactly" accent="what to fix first" />
     </>
   );
 }

@@ -2,15 +2,15 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 
 const services = [
   { label: "Website Design & Development", href: "/services/website-design" },
+  { label: "AI & Custom Business Systems", href: "/services/systems-automation" },
   { label: "Website Maintenance",          href: "/services/maintenance" },
-  { label: "Consulting & Audit",           href: "/services/consulting" },
-  { label: "Branding",                     href: "/services/visual-branding" },
   { label: "Search Engine Optimisation",   href: "/services/seo" },
+  { label: "Visual Branding",              href: "/services/visual-branding" },
+  { label: "Consulting & Audit",           href: "/services/consulting" },
 ];
 
 const links = [
@@ -22,12 +22,41 @@ const links = [
 ];
 
 export default function Footer() {
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterHp, setNewsletterHp] = useState("");
+  const [newsletterState, setNewsletterState] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [newsletterMessage, setNewsletterMessage] = useState("");
+  const newsletterStartedAt = useRef(Date.now());
+
+  async function handleNewsletterSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setNewsletterState("loading");
+    setNewsletterMessage("");
+
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: newsletterEmail,
+          _hp: newsletterHp,
+          _elapsedMs: Date.now() - newsletterStartedAt.current,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Could not subscribe.");
+
+      setNewsletterEmail("");
+      setNewsletterState("success");
+      setNewsletterMessage("Thanks. We'll keep you posted.");
+    } catch (err) {
+      setNewsletterState("error");
+      setNewsletterMessage(err instanceof Error ? err.message : "Could not subscribe.");
+    }
+  }
 
   return (
-    <footer className="bg-[#080808] text-[#fafafa] border-t border-dark-border">
+    <footer className="bg-[#0a0a0a] text-[#fafafa] border-t border-dark-border">
       <div className="container-wide py-10 md:py-16 lg:py-20">
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8 md:gap-10 lg:gap-8">
 
@@ -37,7 +66,7 @@ export default function Footer() {
               <Image src="/images/logo-white-cropped.png" alt="WebGaze" width={180} height={45} className="h-7 w-auto" />
             </Link>
             <p className="text-sm text-dark-muted font-body leading-relaxed max-w-[320px]">
-              Empowering brands with smart, creative, and impactful web solutions — where ideas take shape online.
+              Building high-performance websites, AI-assisted custom systems, and practical digital tools for growing businesses.
             </p>
             <div className="flex items-center gap-3 mt-5">
               {/* LinkedIn */}
@@ -121,21 +150,43 @@ export default function Footer() {
             {/* Newsletter */}
             <div className="mt-6">
               <p className="text-xs font-display font-semibold tracking-[0.12em] uppercase text-dark-muted mb-3">Newsletter</p>
-              <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
+              <form className="flex gap-2" onSubmit={handleNewsletterSubmit}>
                 <input
                   type="email"
                   placeholder="Your email"
+                  required
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
                   className="flex-1 bg-dark-surface border border-dark-border rounded-full px-4 py-2.5 text-sm text-[#fafafa]
                              placeholder:text-dark-muted focus:outline-none focus:border-red-brand transition-colors duration-200"
                 />
+                <input
+                  type="text"
+                  name="company_website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={newsletterHp}
+                  onChange={(e) => setNewsletterHp(e.target.value)}
+                  style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+                />
                 <button
                   type="submit"
+                  disabled={newsletterState === "loading"}
                   className="bg-red-brand rounded-full px-5 py-2.5 text-white text-xs font-display font-semibold
-                             hover:bg-red-dark transition-colors duration-200"
+                             hover:bg-red-dark transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  →
+                  {newsletterState === "loading" ? "..." : "→"}
                 </button>
               </form>
+              {newsletterMessage && (
+                <p
+                  aria-live="polite"
+                  className={`mt-2 text-xs ${newsletterState === "error" ? "text-[#ff7a7f]" : "text-dark-muted"}`}
+                >
+                  {newsletterMessage}
+                </p>
+              )}
             </div>
           </div>
         </div>
