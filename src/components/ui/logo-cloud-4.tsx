@@ -32,7 +32,11 @@ export function LogoCloud({ logos }: LogoCloudProps) {
             key={`${logo.alt}-${index}`}
             src={logo.src}
             alt={logo.alt}
-            loading="lazy"
+            /* Top-of-page social proof — load with the page so logos never pop in
+               under the hero. They're tiny transparent PNGs, so eager is cheap. */
+            loading="eager"
+            decoding="async"
+            fetchPriority={index < logos.length ? "high" : "auto"}
             className="h-8 w-auto max-w-[160px] select-none object-contain opacity-90 transition-opacity duration-300 hover:opacity-100 md:h-10"
           />
         ))}

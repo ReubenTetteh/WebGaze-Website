@@ -181,6 +181,8 @@ export default function MobilePortfolio({
                     alt={product.title}
                     fill
                     sizes="78vw"
+                    priority={i === 0}
+                    loading={i === 0 ? undefined : "eager"}
                     className="object-cover object-top"
                   />
                   <div

@@ -131,7 +131,7 @@ export default function CarePartnersPage() {
           <div className="grid gap-5 md:grid-cols-2">
             {["/portfolio/cpa/care-partners-australia-gallery-1.webp", "/portfolio/cpa/care-partners-australia-gallery-2.jpg"].map((image) => (
               <div key={image} className="relative aspect-[4/3] overflow-hidden rounded-[8px] bg-[#eee] dark:bg-[#111]">
-                <Image src={image} alt={`${project.name} ${project.industry} website — design detail by WebGaze`} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+                <Image src={image} alt={`${project.name} ${project.industry} website — design detail by WebGaze`} fill sizes="(max-width: 768px) 100vw, 50vw" loading="eager" className="object-cover" />
               </div>
             ))}
           </div>

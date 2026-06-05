@@ -155,7 +155,7 @@ export default function ProjectPage() {
                     className="relative aspect-[224/460] w-full max-w-[224px] overflow-hidden rounded-[2.2rem] border-[6px] border-[#15161a] bg-black shadow-[0_30px_70px_-28px_rgba(20,20,22,0.45)] sm:border-[7px]"
                   >
                     <div className="absolute left-1/2 top-2 z-10 h-3.5 w-14 -translate-x-1/2 rounded-full bg-black sm:top-2.5 sm:h-4 sm:w-16" />
-                    <Image src={image} alt={`${project.name} website on mobile — responsive design by WebGaze`} fill sizes="(max-width: 640px) 45vw, 224px" className="object-cover object-top" />
+                    <Image src={image} alt={`${project.name} website on mobile — responsive design by WebGaze`} fill sizes="(max-width: 640px) 45vw, 224px" loading="eager" className="object-cover object-top" />
                   </div>
                 ))}
               </div>

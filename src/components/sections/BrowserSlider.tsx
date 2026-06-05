@@ -41,7 +41,9 @@ export default function BrowserSlider({ pages, duration = "14s" }: { pages: Brow
               {pages.map((page) => (
                 <div key={page.src} className="relative h-full w-1/3 overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element -- decorative viewport screenshot */}
-                  <img src={page.src} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover object-top" />
+                  {/* Eager so all three frames are ready before the visitor scrolls
+                      to this section — the slider auto-plays and must not pop in. */}
+                  <img src={page.src} alt="" loading="eager" decoding="async" className="absolute inset-0 h-full w-full object-cover object-top" />
                 </div>
               ))}
             </div>

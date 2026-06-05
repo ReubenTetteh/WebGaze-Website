@@ -47,6 +47,9 @@ export default function ProjectHeroPreview({
             src={src}
             alt={alt}
             loading={priority ? "eager" : "lazy"}
+            // The page-hero screenshot is the largest above-the-fold asset; hint
+            // the browser to fetch it first so it paints with the page, not after.
+            fetchPriority={priority ? "high" : "auto"}
             decoding="async"
             className="block w-full will-change-transform transition-transform duration-[5500ms] ease-linear group-hover:[transform:translateY(calc(-100%_+_360px))] md:group-hover:[transform:translateY(calc(-100%_+_460px))]"
           />

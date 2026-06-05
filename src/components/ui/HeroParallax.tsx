@@ -95,7 +95,7 @@ export const HeroParallax = ({
             style={{ rotateX, rotateZ, translateY, opacity }}
             className="will-change-transform w-full"
           >
-            <ParallaxRow items={firstRow} direction="left" duration={48} />
+            <ParallaxRow items={firstRow} direction="left" duration={48} priority />
             <ParallaxRow items={secondRow} direction="right" duration={57.6} last />
           </motion.div>
         </div>
@@ -127,11 +127,13 @@ const ParallaxRow = ({
   direction,
   duration,
   last,
+  priority = false,
 }: {
   items: ParallaxProduct[];
   direction: "left" | "right";
   duration: number;
   last?: boolean;
+  priority?: boolean;
 }) => (
   <div className={last ? "" : "mb-3 md:mb-4 lg:mb-5"}>
     {/* duplicated set + travel of exactly -50% = seamless infinite loop */}
@@ -142,7 +144,8 @@ const ParallaxRow = ({
     >
       {[...items, ...items].map((product, i) => (
         <div key={`${product.title}-${i}`} className="shrink-0 pr-3 md:pr-4 lg:pr-5">
-          <ProductCard product={product} />
+          {/* Preload only the first (original, non-duplicated) set of the lead row. */}
+          <ProductCard product={product} priority={priority && i < items.length} />
         </div>
       ))}
     </motion.div>
@@ -151,9 +154,9 @@ const ParallaxRow = ({
 
 const StaticRow = ({ items }: { items: ParallaxProduct[] }) => (
   <div className="flex gap-4 md:gap-6 overflow-x-auto px-4 md:px-8 snap-x snap-mandatory">
-    {items.map((product) => (
+    {items.map((product, i) => (
       <div key={product.title} className="snap-start">
-        <ProductCard product={product} />
+        <ProductCard product={product} priority={i < 3} />
       </div>
     ))}
   </div>
@@ -195,9 +198,13 @@ export const Header = () => {
 export const ProductCard = ({
   product,
   translate,
+  priority = false,
 }: {
   product: ParallaxProduct;
   translate?: MotionValue<number>;
+  /** Preload (vs. just eager-load) — used for the first row so the work
+      gallery is fully painted by the time the visitor scrolls to it. */
+  priority?: boolean;
 }) => {
   return (
     <motion.div
@@ -225,6 +232,10 @@ export const ProductCard = ({
             height={720}
             width={1280}
             sizes="(max-width: 640px) 326px, (max-width: 768px) 365px, (max-width: 1024px) 422px, 480px"
+            priority={priority}
+            // First row preloads; the rest still load eagerly so no tile
+            // fades in blank as the marquee comes into view.
+            loading={priority ? undefined : "eager"}
             className="object-cover object-center absolute h-full w-full inset-0
                        transition-transform duration-700 ease-out
                        group-hover/product:scale-[1.06]"

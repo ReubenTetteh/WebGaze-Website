@@ -81,6 +81,7 @@ export default function ArticlePage() {
         title="Redesign vs. Refresh"
         backHref="/insights"
         tag="Strategy"
+        titleAs="p"
       />
       <BlogArticleLayout
         category="Strategy"

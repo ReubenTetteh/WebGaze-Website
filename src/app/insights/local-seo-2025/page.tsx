@@ -82,6 +82,7 @@ export default function ArticlePage() {
         title="Local SEO in 2025"
         backHref="/insights"
         tag="SEO"
+        titleAs="p"
       />
       <BlogArticleLayout
         category="SEO"

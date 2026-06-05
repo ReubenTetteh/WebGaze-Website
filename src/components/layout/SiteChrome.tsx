@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import FloatingThemeToggle from "@/components/ui/FloatingThemeToggle";
 
 /**
  * Renders the public site chrome (nav, footer, theme toggle) for everything
@@ -13,17 +12,15 @@ import FloatingThemeToggle from "@/components/ui/FloatingThemeToggle";
 export default function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith("/admin");
-  const isV2 = pathname?.startsWith("/v2");
   const isStudio = pathname?.startsWith("/studio");
 
-  if (isAdmin || isV2 || isStudio) {
+  if (isAdmin || isStudio) {
     return <>{children}</>;
   }
 
   return (
     <>
       <Navbar />
-      <FloatingThemeToggle />
       <main>{children}</main>
       <Footer />
     </>

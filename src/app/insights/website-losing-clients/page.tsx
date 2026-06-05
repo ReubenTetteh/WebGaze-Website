@@ -82,6 +82,7 @@ export default function ArticlePage() {
         title="Why Your Website Is Losing You Clients"
         backHref="/insights"
         tag="Web Design"
+        titleAs="p"
       />
       <BlogArticleLayout
         category="Web Design"

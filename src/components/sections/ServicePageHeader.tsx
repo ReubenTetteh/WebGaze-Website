@@ -9,6 +9,10 @@ interface ServicePageHeaderProps {
   backHref?: string;
   tag?: string;      // small category label shown above title
   subtitle?: string; // optional descriptor below title
+  // The banner title is the page <h1> by default. On pages that already render
+  // their own <h1> further down (e.g. insights articles via BlogArticleLayout),
+  // pass "p" so the page keeps a single h1 and avoids competing headings.
+  titleAs?: "h1" | "p";
 }
 
 export default function ServicePageHeader({
@@ -16,7 +20,9 @@ export default function ServicePageHeader({
   backHref = "/services",
   tag,
   subtitle,
+  titleAs = "h1",
 }: ServicePageHeaderProps) {
+  const TitleTag = titleAs === "p" ? motion.p : motion.h1;
   return (
     <section className="relative overflow-hidden min-h-[380px] flex flex-col justify-end bg-[#0a0a0a] pb-16 pt-36">
       {/* Background image */}
@@ -66,14 +72,14 @@ export default function ServicePageHeader({
             </motion.div>
           )}
 
-          <motion.h1
+          <TitleTag
             initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.08, ease: [0.25, 0.1, 0.25, 1] }}
             className="font-display font-bold text-white max-w-[18ch] text-[clamp(2.55rem,10.5vw,3.7rem)] leading-[1.02] tracking-[-0.035em] lg:text-display-xl lg:leading-[1.04] lg:tracking-[-0.04em]"
           >
             {title}
-          </motion.h1>
+          </TitleTag>
 
           {subtitle && (
             <motion.p

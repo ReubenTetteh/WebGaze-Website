@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
@@ -42,7 +42,13 @@ export const metadata: Metadata = {
     locale: "en_AU",
     url: "https://webgaze.com.au",
     siteName: "WebGaze",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "WebGaze — Web Design Agency Sydney" }],
   },
+};
+
+// The site is forced to light mode, so the browser UI colour stays white.
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({

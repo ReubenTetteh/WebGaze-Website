@@ -12,7 +12,7 @@ import { portfolioProjects, projectFilters, type PortfolioProject } from "@/lib/
 
 const EASE_OUT = [0.16, 1, 0.3, 1] as const;
 
-function ProjectTile({ project }: { project: PortfolioProject }) {
+function ProjectTile({ project, priority = false }: { project: PortfolioProject; priority?: boolean }) {
   return (
     <motion.article
       layout
@@ -31,6 +31,8 @@ function ProjectTile({ project }: { project: PortfolioProject }) {
             alt={`${project.name} project cover`}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+            priority={priority}
+            loading={priority ? undefined : "eager"}
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
           />
         </div>
@@ -101,8 +103,8 @@ export default function ProjectsPage() {
             className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3"
           >
             <AnimatePresence mode="popLayout">
-              {filtered.map((project) => (
-                <ProjectTile key={project.slug} project={project} />
+              {filtered.map((project, i) => (
+                <ProjectTile key={project.slug} project={project} priority={i < 6} />
               ))}
             </AnimatePresence>
           </motion.div>

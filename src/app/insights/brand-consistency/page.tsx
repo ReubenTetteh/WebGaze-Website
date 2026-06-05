@@ -79,6 +79,7 @@ export default function ArticlePage() {
         title="The Brand Mistake Costing Businesses Trust"
         backHref="/insights"
         tag="Branding"
+        titleAs="p"
       />
       <BlogArticleLayout
         category="Branding"
