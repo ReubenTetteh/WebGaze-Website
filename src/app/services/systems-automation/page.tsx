@@ -108,8 +108,8 @@ export default function SystemsAutomationPage() {
                 transition={{ duration: 0.6, delay: 0.06, ease: [0.25, 0.1, 0.25, 1] }}
                 className="font-display font-bold text-white text-[clamp(2.55rem,10.5vw,3.7rem)] leading-[1.02] tracking-[-0.035em] lg:text-[clamp(2.4rem,5vw,4.6rem)] lg:leading-[1.0] lg:tracking-[-0.04em]"
               >
-                AI &amp; Custom<br />
-                <span className="text-white/45">Business Systems</span>
+                Software that fits<br />
+                <span className="text-white/45">how you actually work</span>
               </motion.h1>
 
               <motion.p
@@ -118,9 +118,9 @@ export default function SystemsAutomationPage() {
                 transition={{ duration: 0.5, delay: 0.18, ease: EASE }}
                 className="mt-5 max-w-[56ch] font-body text-base leading-relaxed text-white/55"
               >
-                Stop forcing your business into generic tools. We build custom apps,
-                automations, and AI-assisted systems around the work your team actually
-                does.
+                Off-the-shelf tools make you bend your business to fit them. We build
+                custom apps, automation, and AI that fit around your team — and quietly
+                take the busywork off their plate.
               </motion.p>
             </div>
 
@@ -181,7 +181,7 @@ export default function SystemsAutomationPage() {
             <li aria-hidden="true">›</li>
             <li><Link href="/services" className="transition-colors hover:text-red-brand">Services</Link></li>
             <li aria-hidden="true">›</li>
-            <li className="text-[#0a0a0a] dark:text-white">AI &amp; Custom Business Systems</li>
+            <li className="text-[#0a0a0a] dark:text-white">Custom Software &amp; Automation</li>
           </ol>
         </div>
       </nav>
@@ -195,16 +195,15 @@ export default function SystemsAutomationPage() {
           <div className="mt-5 grid grid-cols-1 gap-x-10 gap-y-6 lg:grid-cols-12">
             <Reveal delay={0.06} className="lg:col-span-6">
               <h2 className="font-display text-[clamp(1.75rem,3.5vw,3rem)] font-bold leading-[1.05] tracking-[-0.03em]">
-                Every business has work a custom system could make easier.
+                Every team has work that software should be doing for them.
               </h2>
             </Reveal>
             <Reveal delay={0.12} className="lg:col-span-5 lg:col-start-8">
               <p className="font-body text-sm leading-relaxed text-light-muted dark:text-dark-muted md:text-base">
-                The double-handled spreadsheets. The fleet updates living in chat
-                messages. The learning content scattered across platforms. The reports
-                that take half a day to pull together. We build custom systems and
-                automations that quietly take that work off your team&apos;s plate, with
-                AI doing useful work where it actually helps.
+                The double-handled spreadsheets. The fleet updates buried in chat. The
+                training scattered across five platforms. The report that eats half a
+                day. We build software and automation that quietly takes that work off
+                your team — with AI doing the useful parts where it genuinely helps.
               </p>
             </Reveal>
           </div>
@@ -228,9 +227,9 @@ export default function SystemsAutomationPage() {
 
       {/* ───────────────────────── Process — DARK (isolated, sticky-scroll) ───────────────────────── */}
       <ProcessScroller
-        eyebrow="How we build your system"
-        heading="From a manual headache to a system that runs itself."
-        intro="A clear, proven path from the first conversation to a system your team relies on every day."
+        eyebrow="How we build it"
+        heading="From a daily headache to software that runs itself."
+        intro="A clear, proven path from the first conversation to a tool your team relies on every day."
         stages={systemsPhases}
         bg="#0a0a0a"
       />
