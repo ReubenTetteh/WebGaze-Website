@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import ProjectHeroPreview from "@/components/sections/ProjectHeroPreview";
 import { getProject } from "@/lib/projects";
@@ -145,8 +146,7 @@ function PhoneDeck({ src, scroll = false, className = "" }: { src: string; scrol
       <div className="relative overflow-hidden rounded-[2.4rem] border-[7px] border-[#15161a] bg-black shadow-[0_30px_70px_-28px_rgba(20,20,22,0.45)]">
         <div className="absolute left-1/2 top-2.5 z-10 h-5 w-20 -translate-x-1/2 rounded-full bg-black" />
         <div className="relative h-[500px] w-[244px] overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={src} alt="WINSTAMAC on mobile" loading="lazy" decoding="async" className={`block w-full ${scroll ? "wgDeckP" : ""}`} />
+          <Image src={src} alt="WINSTAMAC on mobile" width={488} height={1060} sizes="244px" className={`block h-auto w-full ${scroll ? "wgDeckP" : ""}`} />
         </div>
       </div>
     </div>
@@ -412,8 +412,7 @@ export function WinstamacCaseStudyStage() {
             {[...PAGES, ...PAGES].map((p, i) => (
               <figure key={i} className="group relative shrink-0">
                 <div className="relative h-[250px] w-[400px] overflow-hidden rounded-xl border border-white/10 bg-[#111114] md:h-[300px] md:w-[480px]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.src} alt={p.label} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover object-top" />
+                  <Image src={p.src} alt={p.label} fill sizes="(min-width: 768px) 480px, 400px" className="object-cover object-top" />
                 </div>
                 <figcaption className="mt-3 font-display text-xs font-bold uppercase tracking-[0.18em] text-white/45">{p.label}</figcaption>
               </figure>

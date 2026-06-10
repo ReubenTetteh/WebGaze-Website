@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Web Design Agency Sydney | WebGaze",
-  description: "WebGaze is a Sydney web design and digital agency. We build high-performance websites, brand identities, and SEO strategies that help businesses grow. Sydney-based, serving clients across Australia.",
+  description: "WebGaze is a Sydney web design and digital agency building high-performance websites, brand identities, and SEO strategies for businesses across Australia.",
   keywords: ["web design agency Sydney", "digital agency Sydney", "website design Sydney", "branding agency Sydney", "SEO Sydney"],
   alternates: { canonical: "https://webgaze.com.au" },
   openGraph: {

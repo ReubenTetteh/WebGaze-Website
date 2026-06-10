@@ -7,8 +7,6 @@ const BASE_URL = "https://webgaze.com.au";
 const EXCLUDED_PROJECT_SLUGS = ["agcci-temp"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
-
   // Top-level + key marketing pages. `priority` is relative within the site.
   const staticRoutes: { path: string; priority: number; changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"] }[] = [
     { path: "/", priority: 1.0, changeFrequency: "weekly" },
@@ -33,9 +31,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/terms-and-conditions", priority: 0.3, changeFrequency: "yearly" },
   ];
 
+  // No `lastModified`: stamping build time on every entry tells crawlers the
+  // whole site changes constantly, which devalues the signal. Omit it until
+  // real per-page dates exist.
   const staticEntries: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
     url: `${BASE_URL}${route.path}`,
-    lastModified: now,
     changeFrequency: route.changeFrequency,
     priority: route.priority,
   }));
@@ -44,7 +44,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter((project) => !EXCLUDED_PROJECT_SLUGS.includes(project.slug))
     .map((project) => ({
       url: `${BASE_URL}/projects/${project.slug}`,
-      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
     }));

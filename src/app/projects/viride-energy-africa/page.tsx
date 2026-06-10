@@ -21,11 +21,11 @@ const project = getProject("viride-energy-africa");
 const heroPreview = `${L}/viride-energy-africa-homepage-fullpage.jpg`;
 
 export const metadata: Metadata = {
-  title: "Viride Energy Africa Portfolio Case Study",
+  title: "Viride Energy Africa — Renewable Energy Website Design | WebGaze",
   description: project?.summary,
   alternates: { canonical: "https://webgaze.com.au/projects/viride-energy-africa" },
   openGraph: {
-    title: "Viride Energy Africa Portfolio Case Study | WebGaze",
+    title: "Viride Energy Africa — Renewable Energy Website Design | WebGaze",
     description: project?.summary,
     url: "https://webgaze.com.au/projects/viride-energy-africa",
     images: [{ url: project?.image ?? heroPreview, width: 1200, height: 900, alt: "Viride Energy Africa — renewable energy website designed and built by WebGaze" }],

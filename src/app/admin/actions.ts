@@ -5,8 +5,10 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { LEAD_STATUSES, updateLeadStatus, type LeadStatus } from "@/lib/leads";
 import { ADMIN_COOKIE } from "@/lib/adminAuth";
+import { requireAdmin } from "@/lib/adminAuthz";
 
 export async function setLeadStatus(id: number, status: string) {
+  await requireAdmin();
   if (!LEAD_STATUSES.includes(status as LeadStatus)) return;
   await updateLeadStatus(id, status as LeadStatus);
   revalidatePath("/admin");

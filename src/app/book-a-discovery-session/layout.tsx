@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Book a Free Discovery Session | AI & Custom Business Systems | WebGaze",
-  description: "Book a free, no-obligation Discovery Session with WebGaze. Tell us the manual work slowing your team down and we'll show you how a custom system or AI automation could take it off your plate.",
+  // absolute: the string is already the final title — stops the root
+  // layout's "%s | WebGaze" template doubling the brand suffix.
+  title: { absolute: "Book a Free Discovery Session | AI & Custom Business Systems | WebGaze" },
+  description: "Book a free, no-obligation Discovery Session. Tell us the manual work slowing your team down and we'll map the custom system or AI automation that removes it.",
   keywords: ["free discovery session", "business automation consultation Sydney", "custom software consultation", "AI automation discovery call"],
   alternates: { canonical: "https://webgaze.com.au/book-a-discovery-session" },
   openGraph: {

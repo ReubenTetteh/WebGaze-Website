@@ -21,11 +21,11 @@ const project = getProject("petra-care-services");
 const heroPreview = `${L}/petra-care-services-homepage-fullpage.jpg`;
 
 export const metadata: Metadata = {
-  title: "Petra Care Services Portfolio Case Study",
+  title: "Petra Care Services — Care Provider Website Design | WebGaze",
   description: project?.summary,
   alternates: { canonical: "https://webgaze.com.au/projects/petra-care-services" },
   openGraph: {
-    title: "Petra Care Services Portfolio Case Study | WebGaze",
+    title: "Petra Care Services — Care Provider Website Design | WebGaze",
     description: project?.summary,
     url: "https://webgaze.com.au/projects/petra-care-services",
     images: [{ url: project?.image ?? heroPreview, width: 1200, height: 900, alt: "Petra Care Services — community care website designed and built by WebGaze" }],

@@ -10,11 +10,11 @@ const project = getProject("care-partners-australia");
 const heroPreview = "/portfolio/cpa/care-partners-australia-homepage-fullpage.webp";
 
 export const metadata: Metadata = {
-  title: "Care Partners Australia Portfolio Case Study",
+  title: "Care Partners Australia — NDIS Website Design | WebGaze",
   description: project?.summary,
   alternates: { canonical: "https://webgaze.com.au/projects/care-partners-australia" },
   openGraph: {
-    title: "Care Partners Australia Portfolio Case Study | WebGaze",
+    title: "Care Partners Australia — NDIS Website Design | WebGaze",
     description: project?.summary,
     url: "https://webgaze.com.au/projects/care-partners-australia",
     images: [{ url: project?.image ?? heroPreview, width: 1200, height: 900, alt: "Care Partners Australia — NDIS & disability support website designed and built by WebGaze" }],

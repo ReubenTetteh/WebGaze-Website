@@ -2,7 +2,9 @@ import ServicePageHeader from "@/components/sections/ServicePageHeader";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions | WebGaze",
+  // absolute: the string is already the final title — stops the root
+  // layout's "%s | WebGaze" template doubling the brand suffix.
+  title: { absolute: "Terms & Conditions | WebGaze" },
   description: "WebGaze's terms and conditions — your agreement when using our website and services.",
   robots: { index: false, follow: false },
   alternates: { canonical: "https://webgaze.com.au/terms-and-conditions" },

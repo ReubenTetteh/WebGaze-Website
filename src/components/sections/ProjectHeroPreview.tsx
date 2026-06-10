@@ -42,16 +42,19 @@ export default function ProjectHeroPreview({
 
       {scroll ? (
         <div className="relative h-[360px] overflow-hidden md:h-[460px]">
-          {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary-height full-page screenshot needs natural rendering, not next/image's fixed box */}
-          <img
+          {/* `h-auto w-full` keeps the full-page screenshot at its natural laid-out
+              height (the hover translate depends on it) while still serving the
+              resized AVIF/WebP rendition instead of the raw multi-hundred-KB JPEG.
+              width/height only seed the pre-load aspect ratio — the clipping
+              container's height is fixed, so a mismatch can't shift layout. */}
+          <Image
             src={src}
             alt={alt}
-            loading={priority ? "eager" : "lazy"}
-            // The page-hero screenshot is the largest above-the-fold asset; hint
-            // the browser to fetch it first so it paints with the page, not after.
-            fetchPriority={priority ? "high" : "auto"}
-            decoding="async"
-            className="block w-full will-change-transform transition-transform duration-[5500ms] ease-linear group-hover:[transform:translateY(calc(-100%_+_360px))] md:group-hover:[transform:translateY(calc(-100%_+_460px))]"
+            width={1440}
+            height={4320}
+            priority={priority}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="block h-auto w-full will-change-transform transition-transform duration-[5500ms] ease-linear group-hover:[transform:translateY(calc(-100%_+_360px))] md:group-hover:[transform:translateY(calc(-100%_+_460px))]"
           />
         </div>
       ) : (

@@ -1,7 +1,17 @@
 import { NextResponse } from "next/server";
 import { ADMIN_COOKIE, isAdminConfigured, sessionToken, verifyPassword } from "@/lib/adminAuth";
+import { getClientIp } from "@/lib/antiBot";
+import { clearFailures, isRateLimited, registerFailure } from "@/lib/rateLimit";
 
 export async function POST(req: Request) {
+  const limitKey = `admin-login:${getClientIp(req) ?? "unknown"}`;
+  if (isRateLimited(limitKey)) {
+    return NextResponse.json(
+      { error: "Too many attempts. Try again in 15 minutes." },
+      { status: 429 }
+    );
+  }
+
   if (!isAdminConfigured()) {
     return NextResponse.json(
       { error: "Admin password is not configured. Set ADMIN_PASSWORD." },
@@ -17,8 +27,10 @@ export async function POST(req: Request) {
   }
 
   if (!(await verifyPassword(password))) {
+    registerFailure(limitKey);
     return NextResponse.json({ error: "Incorrect password." }, { status: 401 });
   }
+  clearFailures(limitKey);
 
   const token = await sessionToken();
   const res = NextResponse.json({ success: true });

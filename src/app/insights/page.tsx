@@ -3,7 +3,9 @@ import ServicePageHeader from "@/components/sections/ServicePageHeader";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Web Design & Digital Marketing Insights | WebGaze",
+  // absolute: the string is already the final title — stops the root
+  // layout's "%s | WebGaze" template doubling the brand suffix.
+  title: { absolute: "Web Design & Digital Marketing Insights | WebGaze" },
   description: "Practical thinking on web design, branding, SEO, and digital strategy for Australian businesses. No fluff — just useful insights from the WebGaze team.",
   keywords: ["web design insights Australia", "digital marketing tips", "branding tips Australia", "SEO insights", "web design blog"],
   alternates: { canonical: "https://webgaze.com.au/insights" },

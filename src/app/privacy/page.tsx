@@ -2,7 +2,9 @@ import ServicePageHeader from "@/components/sections/ServicePageHeader";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy & Cookie Policy | WebGaze",
+  // absolute: the string is already the final title — stops the root
+  // layout's "%s | WebGaze" template doubling the brand suffix.
+  title: { absolute: "Privacy & Cookie Policy | WebGaze" },
   description: "WebGaze's privacy and cookie policy — how we collect, use, and protect your information.",
   robots: { index: false, follow: false },
   alternates: { canonical: "https://webgaze.com.au/privacy" },

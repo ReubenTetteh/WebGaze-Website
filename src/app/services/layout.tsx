@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Web Design & Digital Services Sydney | WebGaze",
+  // absolute: the string is already the final title — stops the root
+  // layout's "%s | WebGaze" template doubling the brand suffix.
+  title: { absolute: "Web Design & Digital Services Sydney | WebGaze" },
   description: "Custom websites, brand identity, SEO, maintenance, and digital consulting — WebGaze offers full-service digital solutions for Sydney businesses ready to grow online.",
   keywords: ["web design services Sydney", "digital agency services Sydney", "website development services", "branding and SEO Sydney"],
   alternates: { canonical: "https://webgaze.com.au/services" },

@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import Image from "next/image";
 
 export type BrowsePage = { src: string; url: string };
 
@@ -40,10 +41,10 @@ export default function BrowserSlider({ pages, duration = "14s" }: { pages: Brow
             <div className="flex h-full w-[300%] animate-browse" style={style}>
               {pages.map((page) => (
                 <div key={page.src} className="relative h-full w-1/3 overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element -- decorative viewport screenshot */}
-                  {/* Eager so all three frames are ready before the visitor scrolls
-                      to this section — the slider auto-plays and must not pop in. */}
-                  <img src={page.src} alt="" loading="eager" decoding="async" className="absolute inset-0 h-full w-full object-cover object-top" />
+                  {/* Eager (priority) so all three frames are ready before the visitor
+                      scrolls to this section — the slider auto-plays and must not pop in.
+                      alt="" is deliberate: these are decorative viewport screenshots. */}
+                  <Image src={page.src} alt="" fill priority sizes="(max-width: 768px) 100vw, 50vw" className="object-cover object-top" />
                 </div>
               ))}
             </div>

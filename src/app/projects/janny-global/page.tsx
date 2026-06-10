@@ -21,11 +21,11 @@ const project = getProject("janny-global");
 const heroPreview = `${L}/janny-global-homepage-fullpage.jpg`;
 
 export const metadata: Metadata = {
-  title: "Janny Global Portfolio Case Study",
+  title: "Janny Global — Real Estate Website Design | WebGaze",
   description: project?.summary,
   alternates: { canonical: "https://webgaze.com.au/projects/janny-global" },
   openGraph: {
-    title: "Janny Global Portfolio Case Study | WebGaze",
+    title: "Janny Global — Real Estate Website Design | WebGaze",
     description: project?.summary,
     url: "https://webgaze.com.au/projects/janny-global",
     images: [{ url: project?.image ?? heroPreview, width: 1200, height: 900, alt: "Janny Global — real estate website designed and built by WebGaze" }],

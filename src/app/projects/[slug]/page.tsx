@@ -35,11 +35,13 @@ export function generateMetadata({ params }: ProjectDetailPageProps): Metadata {
   }
 
   return {
-    title: `${project.name} Portfolio Case Study`,
+    // Full title incl. brand — projects/layout.tsx sets a plain string title,
+    // which stops the root layout's "%s | WebGaze" template reaching pages here.
+    title: `${project.name} — ${project.tag} Website Design | WebGaze`,
     description: project.summary,
     alternates: { canonical: `https://webgaze.com.au/projects/${project.slug}` },
     openGraph: {
-      title: `${project.name} Portfolio Case Study | WebGaze`,
+      title: `${project.name} — ${project.tag} Website Design | WebGaze`,
       description: project.summary,
       url: `https://webgaze.com.au/projects/${project.slug}`,
       images: [{ url: project.image, width: 1200, height: 900, alt: `${project.name} — ${project.industry} website designed and built by WebGaze` }],

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Get a Free Website Quote Sydney | WebGaze",
+  // absolute: the string is already the final title — stops the root
+  // layout's "%s | WebGaze" template doubling the brand suffix.
+  title: { absolute: "Get a Free Website Quote Sydney | WebGaze" },
   description: "Request a free proposal from WebGaze — Sydney's web design and digital agency. Tell us what you need and we'll put together a tailored quote. No obligation.",
   keywords: ["web design quote Sydney", "free website proposal Sydney", "get website quote", "hire web agency Sydney"],
   alternates: { canonical: "https://webgaze.com.au/request-a-quote" },

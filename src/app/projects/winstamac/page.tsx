@@ -5,11 +5,11 @@ import { getProject } from "@/lib/projects";
 const project = getProject("winstamac");
 
 export const metadata: Metadata = {
-  title: "WINSTAMAC Portfolio Case Study",
+  title: "WINSTAMAC — House Plans Website Design | WebGaze",
   description: project?.summary,
   alternates: { canonical: "https://webgaze.com.au/projects/winstamac" },
   openGraph: {
-    title: "WINSTAMAC Portfolio Case Study | WebGaze",
+    title: "WINSTAMAC — House Plans Website Design | WebGaze",
     description: project?.summary,
     url: "https://webgaze.com.au/projects/winstamac",
     images: [{ url: project?.image ?? "", width: 1200, height: 900, alt: "WINSTAMAC — house-plan marketplace website designed and built by WebGaze" }],

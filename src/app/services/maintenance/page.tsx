@@ -7,7 +7,7 @@ import ProcessScroller from "@/components/services/ProcessScroller";
 
 export const metadata: Metadata = {
   title: "Website Maintenance Sydney | Care Plans & Security | WebGaze",
-  description: "Professional website maintenance for Sydney businesses. Security monitoring, updates, daily backups, and performance optimisation — so your site stays fast, secure, and always on.",
+  description: "Website maintenance for Sydney businesses: security monitoring, updates, daily backups, and performance optimisation that keep your site fast and secure.",
   keywords: ["website maintenance Sydney", "website care plan Sydney", "WordPress maintenance Sydney", "website security monitoring", "website support Sydney"],
   alternates: { canonical: "https://webgaze.com.au/services/maintenance" },
   openGraph: {

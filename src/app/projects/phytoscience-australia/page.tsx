@@ -22,11 +22,11 @@ const project = getProject("phytoscience-australia");
 const heroPreview = "/portfolio/phyto/live/phytoscience-australia-homepage-fullpage.jpg";
 
 export const metadata: Metadata = {
-  title: "PhytoScience Australia Portfolio Case Study",
+  title: "PhytoScience Australia — Health & Wellness Website Design | WebGaze",
   description: project?.summary,
   alternates: { canonical: "https://webgaze.com.au/projects/phytoscience-australia" },
   openGraph: {
-    title: "PhytoScience Australia Portfolio Case Study | WebGaze",
+    title: "PhytoScience Australia — Health & Wellness Website Design | WebGaze",
     description: project?.summary,
     url: "https://webgaze.com.au/projects/phytoscience-australia",
     images: [{ url: project?.image ?? heroPreview, width: 1200, height: 900, alt: "PhytoScience Australia — health & wellness website designed and built by WebGaze" }],

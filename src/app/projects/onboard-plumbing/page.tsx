@@ -21,11 +21,11 @@ const project = getProject("onboard-plumbing");
 const heroPreview = `${L}/onboard-plumbing-homepage-fullpage.jpg`;
 
 export const metadata: Metadata = {
-  title: "Onboard Plumbing Portfolio Case Study",
+  title: "Onboard Plumbing — Plumbing Website Design | WebGaze",
   description: project?.summary,
   alternates: { canonical: "https://webgaze.com.au/projects/onboard-plumbing" },
   openGraph: {
-    title: "Onboard Plumbing Portfolio Case Study | WebGaze",
+    title: "Onboard Plumbing — Plumbing Website Design | WebGaze",
     description: project?.summary,
     url: "https://webgaze.com.au/projects/onboard-plumbing",
     images: [{ url: project?.image ?? heroPreview, width: 1200, height: 900, alt: "Onboard Plumbing — trades & local services website designed and built by WebGaze" }],
