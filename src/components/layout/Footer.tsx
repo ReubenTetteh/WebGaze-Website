@@ -136,8 +136,8 @@ export default function Footer() {
             <p className="font-display text-xs font-semibold tracking-[0.18em] uppercase text-dark-muted mb-4">Get In Touch</p>
             <ul className="space-y-2.5">
               <li>
-                <a href="tel:0411078843" className="text-sm text-[#c0c0c0] hover:text-red-brand transition-colors duration-200">
-                  04 1107 8843
+                <a href="tel:0422169233" className="text-sm text-[#c0c0c0] hover:text-red-brand transition-colors duration-200">
+                  0422 169 233
                 </a>
               </li>
               <li>

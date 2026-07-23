@@ -42,7 +42,7 @@ const orgSchema = {
       "name": "WebGaze",
       "url": "https://webgaze.com.au",
       "logo": { "@type": "ImageObject", "url": "https://webgaze.com.au/images/logo-white-cropped.png" },
-      "contactPoint": { "@type": "ContactPoint", "telephone": "+61-411-078-843", "contactType": "customer service", "areaServed": "AU" },
+      "contactPoint": { "@type": "ContactPoint", "telephone": "+61-422-169-233", "contactType": "customer service", "areaServed": "AU" },
       "address": { "@type": "PostalAddress", "addressLocality": "Sydney", "addressRegion": "NSW", "addressCountry": "AU" },
       "sameAs": ["https://www.linkedin.com/company/webgaze", "https://www.instagram.com/webgaze.au", "https://x.com/webgaze_au"]
     },
@@ -52,7 +52,7 @@ const orgSchema = {
       "name": "WebGaze",
       "description": "Sydney web design and digital agency specialising in custom websites, brand identity, SEO, and website maintenance.",
       "url": "https://webgaze.com.au",
-      "telephone": "+61-411-078-843",
+      "telephone": "+61-422-169-233",
       "email": "hello@webgaze.com.au",
       "address": { "@type": "PostalAddress", "addressLocality": "Sydney", "addressRegion": "NSW", "addressCountry": "AU" },
       "areaServed": [{ "@type": "City", "name": "Sydney" }, { "@type": "State", "name": "New South Wales" }, { "@type": "Country", "name": "Australia" }],

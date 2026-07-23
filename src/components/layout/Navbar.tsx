@@ -625,8 +625,8 @@ export default function Navbar() {
                       <a href="mailto:hello@webgaze.com.au" className="font-display text-[13px] font-medium text-white/70 transition-colors hover:text-red-brand">
                         hello@webgaze.com.au
                       </a>
-                      <a href="tel:0411078843" className="font-display text-[13px] font-medium text-white/70 transition-colors hover:text-red-brand">
-                        04 1107 8843
+                      <a href="tel:0422169233" className="font-display text-[13px] font-medium text-white/70 transition-colors hover:text-red-brand">
+                        0422 169 233
                       </a>
                     </div>
 

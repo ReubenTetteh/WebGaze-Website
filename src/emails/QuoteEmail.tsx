@@ -95,7 +95,7 @@ export default function QuoteEmail({
 
           {/* Footer */}
           <Section style={footer}>
-            <Text style={footerText}>WebGaze · hello@webgaze.com.au · +61 411 078 843</Text>
+            <Text style={footerText}>WebGaze · hello@webgaze.com.au · +61 422 169 233</Text>
           </Section>
 
         </Container>

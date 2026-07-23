@@ -34,7 +34,7 @@ const schema = {
   "mainEntity": {
     "@type": "Organization",
     "name": "WebGaze",
-    "telephone": "+61-411-078-843",
+    "telephone": "+61-422-169-233",
     "email": "hello@webgaze.com.au"
   }
 };
